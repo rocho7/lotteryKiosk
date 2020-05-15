@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth'
   providedIn: 'root'
 })
 export class AuthenticationService {
-
+  isLogIn = false;
   constructor( private afAuth : AngularFireAuth ) { }
 
   registerUser( value ) {
@@ -20,7 +20,10 @@ export class AuthenticationService {
     return new Promise<any> (( resolve, reject )=>{
       this.afAuth.signInWithEmailAndPassword( value.email, value.password)
       .then(
-        res => resolve(res),
+        res => {
+          this.isLogIn = true;
+          resolve(res)
+        },
         err => reject(err))
     })
   }

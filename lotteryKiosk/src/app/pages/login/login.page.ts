@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular'
 import { AuthenticationService } from '../../services/authentication.service'
 
+import { MenuPage } from '../menu/menu.page'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -40,9 +42,10 @@ export class LoginPage implements OnInit {
   loginUser( value ) {
     this.authService.loginUser( value )
     .then( res => {
-      console.log("res ", res);
+      console.log("res 2", res);
       this.errorMessage = '';
-      this.navCtrl.navigateForward('/dashboard');
+      // this.navCtrl.navigateForward('/dashboard');
+      this.navCtrl.navigateForward('/menu')
     }, err =>{
       this.errorMessage = err.message
     })
