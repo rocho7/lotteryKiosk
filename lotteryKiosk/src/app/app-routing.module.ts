@@ -1,37 +1,28 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { MenuPage } from './menu/menu.page';
+import { LoginPage } from './pages/login/login.page'
+import { RegisterPage } from './pages/register/register.page'
+
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'login',
-  //   pathMatch: 'full'
-  // },
-  // {
-  //   path: 'login',
-  //   loadChildren: ()=>import( './pages/login/login.module').then (m=> m.LoginPageModule)
-  // },
-  // {
-  //   path: 'register',
-  //   loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
-  // },
-  // {
-  //   path: 'dashboard',
-  //   loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  // },
-  // {
-  //   path: 'menu',
-  //   loadChildren: () => import('./pages/menu/menu.module').then( m => m.MenuPageModule)
-  // },
   {
     path: '',
-    redirectTo: 'menu',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
     path: '',
-    loadChildren: './pages/menu/menu.module#MenuPageModule'
+    loadChildren: () => import('./index/index.module').then( m => m.IndexPageModule)
   },
+  {
+    path: '',
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule),
+  },  {
+    path: 'users',
+    loadChildren: () => import('./pages/users/users.module').then( m => m.UsersPageModule)
+  }
+
 ];
 
 @NgModule({

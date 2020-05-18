@@ -19,7 +19,7 @@
     </ion-header>
 
     <ion-content>
-      <ion-list *ngIf="authService.isLogIn">
+      <ion-list>
         <ion-menu-toggle auto-hide="false" *ngFor="let page of pages">
           <ion-item [routerLink]="page.path" routerDirection="root" 
           [class.active-menu]="activePath === page.path">
