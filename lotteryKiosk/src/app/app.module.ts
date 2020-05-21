@@ -14,6 +14,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth'
 import { AngularFireDatabaseModule } from '@angular/fire/database'
 import { environment } from '../environments/environment'
 
+import { FormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,7 +27,9 @@ import { environment } from '../environments/environment'
     AngularFireModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp( environment.firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     StatusBar,

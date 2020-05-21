@@ -41,6 +41,6 @@ export class AuthenticationService {
     })
   }
   userDetails(){
-    return this.afAuth.user
+    return this.afAuth.currentUser
   }
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { User } from '../../classes/user'
+import { ModalController, ToastController } from '@ionic/angular'
+import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
+import { AuthenticationService } from '../../services/authentication.service'
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -11,10 +15,11 @@ export class UsersPage implements OnInit {
   user = new User();
   list = []
   roleList = [];
-  constructor( private userService: UsersService ) {
-  (<any>window).user = this.user;
-
-    console.log("pages Users")
+  balance = []
+  constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
+    private authService: AuthenticationService ) {
+    (<any>window).user = this.user;
+    console.log( this.authService.userDetails() )
    }
 
   ngOnInit() {
@@ -40,9 +45,59 @@ export class UsersPage implements OnInit {
         });
         this.user.RoleList = []
         this.user.RoleList = this.roleList
-        console.log("role ", role.payload.doc.data())
       } )
     })
+
+    this.userService.getBalance().subscribe( data => {
+      this.balance = []
+      data.forEach( ( balance: any ) =>{
+        this.balance.push({
+          id: balance.payload.doc.id,
+          data: balance.payload.doc.data()
+        });
+      })
+      this.user.BalanceList = []
+      this.user.BalanceList = this.balance;
+    })
+  }
+
+  async openPersonalBalanceModel( user: User ) {
+    const modal = await this.modalCtrl.create({
+      component: ModalPersonalBalancePage,
+      componentProps: {
+        user: user
+      }
+    });
+    modal.onDidDismiss().then((userData) => {
+      if (userData !== null) {
+        this.setBalance( userData )
+      }
+    });
+    return await modal.present();
+  }
+  setBalance( user ){
+    user.data.date = new Date();
+    let data = {
+      amount: user.data.amount,
+      date: new Date(),
+      iduser: user.data.id
+    }
+    console.log("user ", user, " typeof ", typeof user)
+
+    this.userService.addBalance( data )
+     .then( res => {
+       if ( res.id ) {
+        this.showToast( user.data );
+       }
+    })
+  }
+
+  async showToast( user: User ){
+    const toast = await this.toastCtrl.create({
+      message: `You add some money to ${user._name}'s balance`,
+      duration: 2000
+    });
+    toast.present()
   }
 
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular'
 import { AuthenticationService } from '../../services/authentication.service'
-
 import { MenuPage } from '../../menu/menu.page'
 
 @Component({
@@ -24,7 +23,7 @@ export class LoginPage implements OnInit {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
         Validators.required
       ]))
     })
@@ -36,7 +35,7 @@ export class LoginPage implements OnInit {
     ],
     'password': [
       {type: 'required', message: 'Password is required'},
-      {type: 'minlength', message: 'Password must be at least 5 characters long.'}
+      {type: 'minlength', message: 'Password must be at least 6 characters long.'}
     ]
   }
   loginUser( value ) {
@@ -44,14 +43,13 @@ export class LoginPage implements OnInit {
     .then( res => {
       console.log("res 2", res);
       this.errorMessage = '';
-      // this.navCtrl.navigateForward('/dashboard');
-      this.navCtrl.navigateForward('/menu')
+      this.navCtrl.navigateRoot('/menu/users')
     }, err =>{
       this.errorMessage = err.message
     })
   }
+  
   goToRegisterPage(){
     this.navCtrl.navigateForward('/register')
   }
-
 }

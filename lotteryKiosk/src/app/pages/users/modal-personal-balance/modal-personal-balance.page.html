@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>modal-personal-balance</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Name</ion-label>
+    <ion-input class="form-control" type="text" [value]="user.name" readonly></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Nick</ion-label>
+    <ion-input class="form-control" type="text" [value]="user.nick" readonly></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Total</ion-label>
+    <ion-input class="form-control" type="number" [value]="user.total" readonly></ion-input>
+  </ion-item>
+
+  <form class="form" [formGroup]="validations_form" 
+  (ngSubmit)="Accept(validations_form.value)">
+
+    <ion-item>
+      <ion-label>Amount</ion-label>
+      <ion-input class="form-control" type="number" formControlName="amount" [(ngModel)]="user.amount"></ion-input>
+    </ion-item>
+    <ion-button expand="full" color="primary" fill="outline" type="submit"
+    [disabled]="!validations_form.valid">Accept</ion-button>
+    <ion-button expand="full" color="danger" fill="outline">Cancel</ion-button>
+  </form>
+  
+</ion-content>

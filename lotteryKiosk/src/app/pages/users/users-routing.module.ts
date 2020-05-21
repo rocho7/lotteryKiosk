@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: UsersPage
+  },
+  {
+    path: 'modal-personal-balance',
+    loadChildren: () => import('./modal-personal-balance/modal-personal-balance.module').then( m => m.ModalPersonalBalancePageModule)
   }
 ];
 

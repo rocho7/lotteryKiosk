@@ -20,10 +20,10 @@ export class MenuPage implements OnInit {
       name: 'Users',
       path: '/menu/users'
     },
-    // {
-    //   name: 'Register',
-    //   path: '/menu/register'
-    // }
+    {
+      name: 'Register',
+      path: '/register'
+    }
   ]
   constructor( private navCtrl: NavController, private router: Router,  private authService: AuthenticationService ) {
     this.router.events.subscribe(( event: RouterEvent ) =>{
