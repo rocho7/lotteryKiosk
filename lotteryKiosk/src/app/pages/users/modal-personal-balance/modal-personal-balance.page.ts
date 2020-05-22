@@ -24,6 +24,9 @@ export class ModalPersonalBalancePage implements OnInit {
       amount: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^[0-9]+$')
+      ])),
+      date: new FormControl('', Validators.compose([
+        Validators.required
       ]))
     })
   }
@@ -35,7 +38,7 @@ export class ModalPersonalBalancePage implements OnInit {
     }
   }
   cancel(){
-    this.modalCtrl.dismiss() 
+    this.modalCtrl.dismiss(null) 
   }
   
 

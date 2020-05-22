@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { User } from '../../classes/user'
+import { UserListClass } from '../../classes/userClassModel'
 import { ModalController, ToastController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
 import { AuthenticationService } from '../../services/authentication.service'
@@ -61,7 +62,8 @@ export class UsersPage implements OnInit {
     })
   }
 
-  async openPersonalBalanceModel( user: User ) {
+  async openPersonalBalanceModel( user: UserListClass ) {
+    user._date = new Date().toISOString()
     const modal = await this.modalCtrl.create({
       component: ModalPersonalBalancePage,
       componentProps: {
@@ -69,17 +71,16 @@ export class UsersPage implements OnInit {
       }
     });
     modal.onDidDismiss().then((userData) => {
-      if (userData !== null) {
+      if (userData.data !== null) {
         this.setBalance( userData )
       }
     });
     return await modal.present();
   }
   setBalance( user ){
-    user.data.date = new Date();
     let data = {
       amount: user.data.amount,
-      date: new Date(),
+      date: new Date( user.data._date ),
       iduser: user.data.id
     }
     console.log("user ", user, " typeof ", typeof user)

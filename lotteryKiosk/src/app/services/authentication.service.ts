@@ -19,9 +19,8 @@ export class AuthenticationService {
   loginUser( value ) {
     return new Promise<any> (( resolve, reject )=>{
       this.afAuth.signInWithEmailAndPassword( value.email, value.password)
-      .then(
-        res => {
-          this.isLogIn = true;
+      .then( res => {
+        this.isLogIn = true;
           resolve(res)
         },
         err => reject(err))
@@ -33,14 +32,16 @@ export class AuthenticationService {
         this.afAuth.signOut()
         .then(()=>{
           console.log("Logout");
-          resolve();
+          resolve(true);
         }).catch(( error )=>{
-          reject();
+          reject(error);
         });
       }
     })
   }
   userDetails(){
-    return this.afAuth.currentUser
+    let currentUser = this.afAuth.currentUser
+    console.log("currentUser ", currentUser)
+    return currentUser
   }
 }

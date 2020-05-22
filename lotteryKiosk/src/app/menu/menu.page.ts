@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular'
 import { Router, RouterEvent } from '@angular/router'
 import { AuthenticationService } from '../services/authentication.service'
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-menu',
@@ -21,7 +22,7 @@ export class MenuPage implements OnInit {
       path: '/menu/users'
     },
     {
-      name: 'Register',
+      name: 'Update register',
       path: '/register'
     }
   ]
@@ -51,6 +52,16 @@ export class MenuPage implements OnInit {
       // this.navCtrl.navigateForward('/login')
     }
    
+  }
+  logOut(){
+    this.authService.loginOutUser()
+    .then( res => {
+      if ( res ) {
+        this.navCtrl.navigateRoot('/login')
+      }
+    }).catch( error =>{
+      console.error(error)
+    })
   }
 
 }

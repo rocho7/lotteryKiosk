@@ -18,7 +18,7 @@ export class UserListClass {
     _idrole: string = "ROLE_PL"
     amount: number = 0
     _total: number = 0
-    _date: Date
+    _date: string
     registerDate: Date
     
     get name(){
