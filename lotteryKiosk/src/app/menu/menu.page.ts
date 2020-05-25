@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular'
 import { Router, RouterEvent } from '@angular/router'
 import { AuthenticationService } from '../services/authentication.service'
+import { UsersService } from '../providers/users.service'
+import { User } from '../classes/user'
+import { DataService } from '../providers/data-service.service'
 import { error } from 'protractor';
 
 @Component({
@@ -11,6 +14,10 @@ import { error } from 'protractor';
 })
 export class MenuPage implements OnInit {
   activePath = '';
+  user = new User();
+  list = []
+  roleList = []
+  balance = []
 
   pages = [
     {
@@ -22,36 +29,59 @@ export class MenuPage implements OnInit {
       path: '/menu/users'
     },
     {
-      name: 'Update register',
-      path: '/register'
+      name: 'Calendar',
+      path: '/menu/calendar'
     }
   ]
-  constructor( private navCtrl: NavController, private router: Router,  private authService: AuthenticationService ) {
+  constructor( private navCtrl: NavController, private router: Router,  private authService: AuthenticationService, 
+    private userService: UsersService, private dataService: DataService ) {
     this.router.events.subscribe(( event: RouterEvent ) =>{
       this.activePath = event.url
 
       if( !event.url ) {
         this.activePath = this.pages[0].path
       }
-      // if ( event.url === '/menu'){
-      //   this.activePath = '/menu/dashboard';
-      //   console.log("this.pages[0].path ", this.pages[0].path)
-      //   console.log("this.activePath ", this.activePath)
-      // }else {
-      //   this.activePath = event.url
-      // }
-
-      // console.log("this.activePath ", this.activePath)
     })
    }
 
-  ngOnInit() {
-    console.log("MENUPAGE isLogIng ", this.authService.isLogIn)
-    // console.log("this.pages ", this.pages)
-    if ( !this.authService.isLogIn ){
-      // this.navCtrl.navigateForward('/login')
-    }
-   
+   ngOnInit() {
+    this.userService.getUsers().subscribe( data => {
+      
+    this.list = []
+      data.forEach( ( line : any ) => {
+        this.list.push({
+          id: line.payload.doc.id,
+          data: line.payload.doc.data()
+        });
+      })
+      this.user.UsersList = [];
+      this.user.UsersList = this.list;
+    })
+
+    this.userService.getRoles().subscribe( data => {
+      this.roleList = [];
+      data.forEach( ( role: any ) =>{
+        this.roleList.push({
+          id: role.payload.doc.id,
+          data: role.payload.doc.data()
+        });
+        this.user.RoleList = []
+        this.user.RoleList = this.roleList
+      } )
+    })
+
+    this.userService.getBalance().subscribe( data => {
+      this.balance = []
+      data.forEach( ( balance: any ) =>{
+        this.balance.push({
+          id: balance.payload.doc.id,
+          data: balance.payload.doc.data()
+        });
+      })
+      this.user.BalanceList = []
+      this.user.BalanceList = this.balance;
+      this.dataService.setData('userList', this.user.UsersList)
+    })
   }
   logOut(){
     this.authService.loginOutUser()

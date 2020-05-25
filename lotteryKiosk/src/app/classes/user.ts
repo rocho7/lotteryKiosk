@@ -1,4 +1,5 @@
 import { UserListClass, roleClassModel, balanceClassModel } from './userClassModel'
+
 export class User {
     id: string
     uid: string
@@ -68,10 +69,12 @@ export class User {
     }
     getTotalBalance( userLine: UserListClass ){
         let totalPersonalBalance = 0;
+        userLine.dateAndAmount = []
         this.BalanceList.forEach( balanceLine =>{
             if ( balanceLine.iduser === userLine.id ){
                 totalPersonalBalance += balanceLine.amount
                 userLine.total = totalPersonalBalance
+                userLine.storeDateAndAmountEachPlayer( balanceLine )
             }
         })
     }

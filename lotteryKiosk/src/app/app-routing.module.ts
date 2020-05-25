@@ -21,6 +21,14 @@ const routes: Routes = [
   },  {
     path: 'users',
     loadChildren: () => import('./pages/users/users.module').then( m => m.UsersPageModule)
+  },
+  {
+    path: 'calendar',
+    loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
+  },
+  {
+    path: 'bets',
+    loadChildren: () => import('./pages/bets/bets.module').then( m => m.BetsPageModule)
   }
 
 ];

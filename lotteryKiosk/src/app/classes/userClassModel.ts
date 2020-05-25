@@ -16,10 +16,11 @@ export class UserListClass {
     _email: string
     _role: string
     _idrole: string = "ROLE_PL"
-    amount: number = 0
+    _amount: number = 0
     _total: number = 0
     _date: string
     registerDate: Date
+    dateAndAmount = []
     
     get name(){
         return this._name
@@ -46,6 +47,28 @@ export class UserListClass {
     set total ( value ) {
         this._total = value;
     }
+    get amount(){
+        return this._amount
+    }
+    set amount ( value ) {
+        this._amount = value;
+    }
+    get date(){
+        return this._date
+    }
+    set date ( value ) {
+        this._date = value;
+    }
+    storeDateAndAmountEachPlayer( balanceLine ){
+        let balanceDate = []
+        let user = {
+            date:  balanceLine.date,
+            amount: balanceLine.amount
+        }
+        this.dateAndAmount.push( user )
+        console.log("dateAndAmount ", this.dateAndAmount)
+    }
+
 }
 export function roleClassModel() {
     this.idrole = "";

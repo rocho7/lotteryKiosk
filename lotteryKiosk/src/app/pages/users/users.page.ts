@@ -5,7 +5,7 @@ import { UserListClass } from '../../classes/userClassModel'
 import { ModalController, ToastController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
 import { AuthenticationService } from '../../services/authentication.service'
-
+import { DataService } from '../../providers/data-service.service'
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -18,7 +18,7 @@ export class UsersPage implements OnInit {
   roleList = [];
   balance = []
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
-    private authService: AuthenticationService ) {
+    private authService: AuthenticationService, private dataService: DataService ) {
     (<any>window).user = this.user;
     console.log( this.authService.userDetails() )
    }
@@ -59,6 +59,7 @@ export class UsersPage implements OnInit {
       })
       this.user.BalanceList = []
       this.user.BalanceList = this.balance;
+      this.dataService.setData('userList', this.user.UsersList)
     })
   }
 
