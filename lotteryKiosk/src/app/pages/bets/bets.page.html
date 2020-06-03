@@ -5,5 +5,60 @@
 </ion-header>
 
 <ion-content>
+<form [formGroup]="form_validations" (ngSubmit)="Accept(form_validations.value)">
+  <ion-item>
+    <ion-label>Lottery</ion-label>
+    <ion-select [(ngModel)]="selectItem"  formControlName="select" 
+    (ionChange)="createBet( selectItem )">
+      <ion-select-option  *ngFor="let lot of lottery.kindOfBets" [value]="lot">
+        {{ lot.type | uppercase }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 
+  <div formArrayName="eachLottery">
+    <ion-grid *ngFor="let cell of form_validations.get('eachLottery').controls;  index as i">
+      <div [formGroupName]="i">
+        <h4>{{ handleTypeOfBetInTemplate( cell.value.idType )[0].type }}</h4>
+        <ion-row>
+          <ion-col *ngFor="let combi of cell.get('combination1').controls; index as h">
+            <ion-item formArrayName="combination1">
+              <ion-input type="number" [formControlName]="h"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="4">
+            <h4>{{ handleTypeOfBetInTemplate( cell.value.idType )[0].description1 }}</h4>
+          </ion-col>
+
+          <ion-col *ngFor="let extra of cell.get('extranumber').controls; index as g">
+            <ion-item formArrayName="extranumber">
+              <ion-input type="number" [formControlName]="g"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        cell.invalid {{cell.invalid}}
+        <ion-row> 
+          <ion-col size=2 offset="3">
+              <ion-button type="submit" expand="block" fill="outline"
+              (click)="indexSelected=i" [disabled]="cell.invalid">Accept</ion-button>
+          </ion-col>
+          <ion-col size="2" offset="3">
+            <ion-button expand="block" fill="outline" (click)="deleteBet( i )">Delete</ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </div>
+  
+</form>
+<ion-grid *ngIf="form_validations.get('eachLottery').length === 0 && lottery.messagesList.length > 0">
+  <ion-row>
+    <ion-col>
+      <h2>{{ displayMessageInTemplate( 'nobets' )[0].nobets }}</h2>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>

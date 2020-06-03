@@ -44,6 +44,9 @@ export class RegisterPage implements OnInit {
       password: new FormControl('', Validators.compose([
         Validators.required,
         Validators.minLength(6)
+      ])),
+      acceptedProtectonLaw: new FormControl(false, Validators.compose([
+        Validators.requiredTrue
       ]))
     })
   }
@@ -57,7 +60,9 @@ export class RegisterPage implements OnInit {
       user.email = res.user.email
       user._nick = value.nick
       user.name = value.name
-
+      user.acceptedProtectonLaw = value.acceptedProtectonLaw
+      user.idrole = user.idrole
+      
       this.registerNewAccount( user, value )
     }, err =>{
       console.log("err ", err);

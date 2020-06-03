@@ -31,6 +31,10 @@ export class MenuPage implements OnInit {
     {
       name: 'Calendar',
       path: '/menu/calendar'
+    },
+    {
+      name: 'Bets',
+      path: '/menu/bets'
     }
   ]
   constructor( private navCtrl: NavController, private router: Router,  private authService: AuthenticationService, 

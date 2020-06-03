@@ -40,6 +40,11 @@
         </div>
       </ng-container>
     </div>
+    <ion-item>
+      <ion-label>Acepto las condiciones de uso y política de privacidad</ion-label>
+      <ion-checkbox formControlName="acceptedProtectonLaw"></ion-checkbox>
+    </ion-item>
+
     <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid"
     expand="full" fill="outline">Register</ion-button>
 
@@ -49,6 +54,7 @@
       <ion-spinner name="lines"></ion-spinner>
     </div>
   </form>
+  {{validations_form.value | json }}
   <p class="go-to-login">Already have an account? <a (click)="goLoginPage()">Try to Log In.</a></p>
 
 </ion-content>

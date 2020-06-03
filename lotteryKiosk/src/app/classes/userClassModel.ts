@@ -21,12 +21,12 @@ export class UserListClass {
     _date: string
     registerDate: Date
     dateAndAmount = []
+    acceptedProtectonLaw: boolean = false
     
     get name(){
         return this._name
     }
     set name ( value ) {
-        console.log("name ", value)
         this._name = value;
     }
     get email(){
