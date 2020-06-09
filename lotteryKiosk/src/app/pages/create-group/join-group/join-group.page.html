@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>joinGroup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>Enter your friend's lottery code</h3>
+  <form class="form" [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
+    <ion-item>
+      <ion-label position="floating">Access code</ion-label>
+      <ion-input type="text" formControlName="code"></ion-input>
+    </ion-item>
+    <div *ngIf="message">
+      {{ message }}
+    </div>
+    <ion-button type="submit" fill="outline" expand="full" [disabled]="!validations_form.valid">Continue</ion-button>
+  </form>
+
+</ion-content>

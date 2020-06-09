@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore'
-import { Observable } from 'rxjs'
-import { error } from 'protractor';
-
+import { Observable, BehaviorSubject } from 'rxjs'
+import * as firebase from 'firebase'
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-  users: Observable<any[]>
+  users = []
+  user = []
   roles: Observable<any[]>
   amount: Observable<any[]>
+  userWatcher = new BehaviorSubject<any>([])
+  userWatcher$ = this.userWatcher.asObservable()
+
   constructor( private firestore: AngularFirestore ) {}
 
   registerAccountDB( user ){
@@ -19,7 +22,7 @@ export class UsersService {
       nick : user._nick,
       name : user.name,
       registerDate : new Date(),
-      acceptedProtectonLaw: user.acceptedProtectonLaw,
+      acceptedProtectionLaw: user.acceptedProtectionLaw,
       idrole: user.idrole
     }
     return this.firestore.collection('users').doc( user.uid ).set( data )
@@ -29,9 +32,36 @@ export class UsersService {
       return error
     })
   }
-  getUsers(){
-    let leadePosts = {}
-    return this.users = this.firestore.collection('users').snapshotChanges();
+  getUsers( codeGroup ){
+    // return this.users = this.firestore.collection('users').snapshotChanges() 
+    return new Promise<any>(( resolve, reject ) =>{
+      
+       firebase.firestore().collection('users').where("codes", "array-contains", codeGroup)
+      .get().then( querySnapshot =>{
+        this.users = []
+        querySnapshot.forEach( user => {
+          this.users.push ({
+            id: user.id,
+            data: user.data()
+          })
+        });
+        console.log("this.users ", this.users)
+        
+        resolve( this.users )
+      })
+    }) 
+  }
+  getUser( uid ) {
+    firebase.firestore().collection('users').doc( uid ).onSnapshot(doc =>{
+      this.user = []
+      this.user.push( doc.data())
+      this.userWatcher.next( this.user )
+    })    
+  }
+  setUser( uid, fieldsModified ){
+    return this.firestore.collection('users').doc( uid ).set( fieldsModified , {merge: true})
+    .then( res => res )
+    .catch( err => err)
   }
   getRoles(){
     return this.roles = this.firestore.collection('usersRole').snapshotChanges();

@@ -22,7 +22,7 @@ export class User {
         this._UsersList = [];
         arr.forEach( line => {
             let newUserLine = Object.assign( new UserListClass(), line.data)
-            newUserLine.id = line.id;
+            newUserLine.uid = line.id;
             this.UsersList.push( newUserLine );
         })
     }
@@ -71,7 +71,7 @@ export class User {
         let totalPersonalBalance = 0;
         userLine.dateAndAmount = []
         this.BalanceList.forEach( balanceLine =>{
-            if ( balanceLine.iduser === userLine.id ){
+            if ( balanceLine.iduser === userLine.uid ){
                 totalPersonalBalance += balanceLine.amount
                 userLine.total = totalPersonalBalance
                 userLine.storeDateAndAmountEachPlayer( balanceLine )

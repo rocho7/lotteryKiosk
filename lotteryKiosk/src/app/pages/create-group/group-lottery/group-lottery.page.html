@@ -1,9 +1,22 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>groupLottery</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/group-list"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-list lines="inset">
+    <ion-item (click)="create('group')">
+      <ion-label>Create a group with your friends</ion-label>
+    </ion-item>
+  
+    <ion-item (click)="create('join')">
+      <ion-label>Join a friend's group</ion-label>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

@@ -90,7 +90,7 @@ export class RegisterPage implements OnInit {
   login( value ){
     
     this.authService.loginUser( value )
-    .then( res => this.navCtrl.navigateRoot('/menu/users'))
+    .then( res => this.navCtrl.navigateRoot('/menu/group-list'))
   }
   goLoginPage(){
     this.navCtrl.navigateBack('')

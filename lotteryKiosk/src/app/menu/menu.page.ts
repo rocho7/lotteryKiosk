@@ -18,8 +18,13 @@ export class MenuPage implements OnInit {
   list = []
   roleList = []
   balance = []
+  currentPage: string
 
   pages = [
+    {
+      name: 'List of groups',
+      path: '/menu/group-list'
+    },
     {
       name: 'Dashboard',
       path: '/menu/dashboard'
@@ -41,51 +46,54 @@ export class MenuPage implements OnInit {
     private userService: UsersService, private dataService: DataService ) {
     this.router.events.subscribe(( event: RouterEvent ) =>{
       this.activePath = event.url
-
+      let currentPageIndex = null
+      this.currentPage = ""
       if( !event.url ) {
         this.activePath = this.pages[0].path
+        currentPageIndex = this.activePath.split('/').length
+        this.currentPage = this.activePath.split('/')[currentPageIndex-1]
       }
     })
    }
 
    ngOnInit() {
-    this.userService.getUsers().subscribe( data => {
+    // this.userService.getUsers().subscribe( data => {
       
-    this.list = []
-      data.forEach( ( line : any ) => {
-        this.list.push({
-          id: line.payload.doc.id,
-          data: line.payload.doc.data()
-        });
-      })
-      this.user.UsersList = [];
-      this.user.UsersList = this.list;
-    })
+    // this.list = []
+    //   data.forEach( ( line : any ) => {
+    //     this.list.push({
+    //       id: line.payload.doc.id,
+    //       data: line.payload.doc.data()
+    //     });
+    //   })
+    //   this.user.UsersList = [];
+    //   this.user.UsersList = this.list;
+    // })
 
-    this.userService.getRoles().subscribe( data => {
-      this.roleList = [];
-      data.forEach( ( role: any ) =>{
-        this.roleList.push({
-          id: role.payload.doc.id,
-          data: role.payload.doc.data()
-        });
-        this.user.RoleList = []
-        this.user.RoleList = this.roleList
-      } )
-    })
+    // this.userService.getRoles().subscribe( data => {
+    //   this.roleList = [];
+    //   data.forEach( ( role: any ) =>{
+    //     this.roleList.push({
+    //       id: role.payload.doc.id,
+    //       data: role.payload.doc.data()
+    //     });
+    //     this.user.RoleList = []
+    //     this.user.RoleList = this.roleList
+    //   } )
+    // })
 
-    this.userService.getBalance().subscribe( data => {
-      this.balance = []
-      data.forEach( ( balance: any ) =>{
-        this.balance.push({
-          id: balance.payload.doc.id,
-          data: balance.payload.doc.data()
-        });
-      })
-      this.user.BalanceList = []
-      this.user.BalanceList = this.balance;
-      this.dataService.setData('userList', this.user.UsersList)
-    })
+    // this.userService.getBalance().subscribe( data => {
+    //   this.balance = []
+    //   data.forEach( ( balance: any ) =>{
+    //     this.balance.push({
+    //       id: balance.payload.doc.id,
+    //       data: balance.payload.doc.data()
+    //     });
+    //   })
+    //   this.user.BalanceList = []
+    //   this.user.BalanceList = this.balance;
+    //   this.dataService.setData('userList', this.user.UsersList)
+    // })
   }
   logOut(){
     this.authService.loginOutUser()
@@ -96,6 +104,9 @@ export class MenuPage implements OnInit {
     }).catch( error =>{
       console.error(error)
     })
+  }
+  goTo(){
+    this.navCtrl.navigateForward('/group')
   }
 
 }

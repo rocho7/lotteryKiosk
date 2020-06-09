@@ -18,13 +18,14 @@ const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule),
-  },  {
-    path: 'group-lottery',
-    loadChildren: () => import('./pages/create-group/group-lottery/group-lottery.module').then( m => m.GroupLotteryPageModule)
+  },
+  {
+    path: '',
+    // canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/create-group/group-index/group-index.module').then( m => m.GroupIndexPageModule)
   }
-
 
 ];
 

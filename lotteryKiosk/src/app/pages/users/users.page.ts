@@ -6,6 +6,7 @@ import { ModalController, ToastController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
 import { AuthenticationService } from '../../services/authentication.service'
 import { DataService } from '../../providers/data-service.service'
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -14,29 +15,33 @@ import { DataService } from '../../providers/data-service.service'
 export class UsersPage implements OnInit {
   
   user = new User();
-  list = []
+  list: any
   roleList = [];
   balance = []
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
-    private authService: AuthenticationService, private dataService: DataService ) {
+    private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute ) {
     (<any>window).user = this.user;
     console.log( this.authService.userDetails() )
    }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe( data => {
-      
-    this.list = []
-      data.forEach( ( line : any ) => {
-        this.list.push({
-          id: line.payload.doc.id,
-          data: line.payload.doc.data()
-        });
-      })
-      this.user.UsersList = [];
-      this.user.UsersList = this.list;
-    })
+    let codeGroup = ''
+    this.activatedRoute.queryParams.subscribe( group =>{
+      console.log(group)
 
+      codeGroup = group.data ? group.data.code : group.code
+      if ( codeGroup ) {
+        this.userService.getUsers( codeGroup )
+        .then( userList => {
+          console.log("userList ", userList)
+          this.user.UsersList = [];
+          this.user.UsersList = userList
+          this.setUsersList()
+        })  
+      }
+    })
+  }
+  setUsersList(){
     this.userService.getRoles().subscribe( data => {
       this.roleList = [];
       data.forEach( ( role: any ) =>{

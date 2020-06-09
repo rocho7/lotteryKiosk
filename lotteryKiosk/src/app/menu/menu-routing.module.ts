@@ -9,6 +9,10 @@ const routes: Routes = [
     component: MenuPage,
     children: [
       {
+        path: 'group-list',
+        loadChildren: () => import('../pages/create-group/group-list/group-list.module').then( m => m.GroupListPageModule)
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('../pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
       },
