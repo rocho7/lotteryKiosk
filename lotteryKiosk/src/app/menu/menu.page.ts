@@ -3,7 +3,7 @@ import { NavController } from '@ionic/angular'
 import { Router, RouterEvent } from '@angular/router'
 import { AuthenticationService } from '../services/authentication.service'
 import { UsersService } from '../providers/users.service'
-import { User } from '../classes/user'
+import { Lottery } from '../classes/user'
 import { DataService } from '../providers/data-service.service'
 import { error } from 'protractor';
 
@@ -14,7 +14,7 @@ import { error } from 'protractor';
 })
 export class MenuPage implements OnInit {
   activePath = '';
-  user = new User();
+  // user = new Lottery();
   list = []
   roleList = []
   balance = []

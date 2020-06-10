@@ -61,8 +61,6 @@ export class GroupListPage implements OnInit {
   }
 
   deleteGroup( group ) {
-    this.userService.userWatcher$.pipe( take( 1 ) )
-    .subscribe( m => console.log("observable ", m))
     this.presentAlertConfirm()
     .then( isDeleted => {
       if ( isDeleted.role === 'accpet' ){
@@ -77,7 +75,7 @@ export class GroupListPage implements OnInit {
   goToUserList( group ) {
     let navigationExtras: NavigationExtras = {
       queryParams:{
-        ...group
+        code: group.data.code
       }
     }
     this.navCtrl.navigateForward('/menu/users', navigationExtras)

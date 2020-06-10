@@ -1,12 +1,3 @@
-// export function userClassModel() {
-//     this.id = "";
-//     this.name = "";
-//     this.nick = "";
-//     this.email = "";
-//     this.idrole = "ROLE_PL";//PLAYER ROLE
-//     this.role = "";
-//     this.amount = null;
-// }
 export class UserListClass {
     id: string
     uid: string
@@ -45,13 +36,16 @@ export class UserListClass {
         return this._total
     }
     set total ( value ) {
+        console.log("total ", value)
         this._total = value;
     }
     get amount(){
         return this._amount
     }
     set amount ( value ) {
+        console.log("amount ", value)
         this._amount = value;
+        this.total += this._amount
     }
     get date(){
         return this._date
@@ -60,13 +54,11 @@ export class UserListClass {
         this._date = value;
     }
     storeDateAndAmountEachPlayer( balanceLine ){
-        let balanceDate = []
         let user = {
             date:  balanceLine.date,
             amount: balanceLine.amount
         }
         this.dateAndAmount.push( user )
-        console.log("dateAndAmount ", this.dateAndAmount)
     }
 
 }

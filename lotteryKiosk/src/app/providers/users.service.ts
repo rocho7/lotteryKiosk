@@ -37,7 +37,8 @@ export class UsersService {
     return new Promise<any>(( resolve, reject ) =>{
       
        firebase.firestore().collection('users').where("codes", "array-contains", codeGroup)
-      .get().then( querySnapshot =>{
+       .get()
+        .then( querySnapshot =>{
         this.users = []
         querySnapshot.forEach( user => {
           this.users.push ({
@@ -66,8 +67,22 @@ export class UsersService {
   getRoles(){
     return this.roles = this.firestore.collection('usersRole').snapshotChanges();
   }
-  getBalance(){
-    return this.amount = this.firestore.collection('balance').snapshotChanges();
+  getBalance( codeGroup ){
+    return new Promise<any>(( resolve, reject )=>{
+      firebase.firestore().collection('balance').where("codes", "==", codeGroup)
+      .get()
+      .then( res =>{
+        let balance = []
+        res.forEach( line => {
+          balance.push({
+            id: line.id,
+            data: line.data()
+          })
+        });
+        resolve( balance )
+      })
+    })
+    // return this.amount = this.firestore.collection('balance').snapshotChanges();
   }
   addBalance( amount: object ){
     // return this.firestore.collection('balance').doc( idbalance ).set( amount )

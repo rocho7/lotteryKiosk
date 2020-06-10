@@ -45,7 +45,7 @@ export class RegisterPage implements OnInit {
         Validators.required,
         Validators.minLength(6)
       ])),
-      acceptedProtectonLaw: new FormControl(false, Validators.compose([
+      acceptedProtectionLaw: new FormControl(false, Validators.compose([
         Validators.requiredTrue
       ]))
     })
@@ -60,7 +60,7 @@ export class RegisterPage implements OnInit {
       user.email = res.user.email
       user._nick = value.nick
       user.name = value.name
-      user.acceptedProtectonLaw = value.acceptedProtectonLaw
+      user.acceptedProtectionLaw = value.acceptedProtectionLaw
       user.idrole = user.idrole
       
       this.registerNewAccount( user, value )

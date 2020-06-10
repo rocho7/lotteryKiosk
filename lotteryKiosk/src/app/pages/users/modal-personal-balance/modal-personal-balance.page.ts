@@ -25,14 +25,14 @@ export class ModalPersonalBalancePage implements OnInit {
         Validators.required,
         Validators.pattern('^[0-9]+$')
       ])),
-      date: new FormControl('', Validators.compose([
+      date: new FormControl(new Date().toISOString(), Validators.compose([
         Validators.required
       ]))
     })
   }
   
   Accept( data ) {
-    // this.user.amount = data.amount;
+    this.user.amount = data.amount;
     if ( data.amount ) {
       this.modalCtrl.dismiss( this.user ) 
     }

@@ -1,6 +1,6 @@
 import { UserListClass, roleClassModel, balanceClassModel } from './userClassModel'
 
-export class User {
+export class Lottery {
     id: string
     uid: string
     _name: string
@@ -36,7 +36,7 @@ export class User {
             newRoleLine.idrole = role.id;
             this.RoleList.push( newRoleLine )
         })
-        // this.getRoleEachUser()
+        this.getRoleEachUser()
     }
     get BalanceList(){
         return this._BalanceList

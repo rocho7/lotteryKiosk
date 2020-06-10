@@ -9,8 +9,8 @@
   <ion-label>List of users</ion-label>
   <ion-button>See All</ion-button>
 </ion-list-header>
-<ion-list *ngIf="user.UsersList.length > 0">
-  <ion-item-sliding *ngFor="let user of user.UsersList">
+<ion-list *ngIf="lottery.UsersList.length > 0">
+  <ion-item-sliding *ngFor="let user of lottery.UsersList">
     <ion-item>
       <ion-avatar slot="start">
         <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
@@ -31,7 +31,7 @@
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button>
-    {{ user.totalBalance }}<ion-icon name="cash-outline"></ion-icon>
+    {{ lottery.totalBalance }}<ion-icon name="cash-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 

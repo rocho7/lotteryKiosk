@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
-import { User } from '../../classes/user'
+import { Lottery } from '../../classes/user'
 import { UserListClass } from '../../classes/userClassModel'
 import { ModalController, ToastController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
@@ -14,28 +14,29 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UsersPage implements OnInit {
   
-  user = new User();
+  lottery = new Lottery();
   list: any
   roleList = [];
-  balance = []
+  codeGroup:string = ''
+
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute ) {
-    (<any>window).user = this.user;
+    (<any>window).lottery = this.lottery;
     console.log( this.authService.userDetails() )
    }
 
   ngOnInit() {
-    let codeGroup = ''
+    
     this.activatedRoute.queryParams.subscribe( group =>{
       console.log(group)
 
-      codeGroup = group.data ? group.data.code : group.code
-      if ( codeGroup ) {
-        this.userService.getUsers( codeGroup )
+      this.codeGroup = group.code
+      if ( this.codeGroup ) {
+        this.userService.getUsers( this.codeGroup )
         .then( userList => {
           console.log("userList ", userList)
-          this.user.UsersList = [];
-          this.user.UsersList = userList
+          this.lottery.UsersList = [];
+          this.lottery.UsersList = userList
           this.setUsersList()
         })  
       }
@@ -49,59 +50,53 @@ export class UsersPage implements OnInit {
           id: role.payload.doc.id,
           data: role.payload.doc.data()
         });
-        this.user.RoleList = []
-        this.user.RoleList = this.roleList
+        this.lottery.RoleList = []
+        this.lottery.RoleList = this.roleList
       } )
     })
 
-    this.userService.getBalance().subscribe( data => {
-      this.balance = []
-      data.forEach( ( balance: any ) =>{
-        this.balance.push({
-          id: balance.payload.doc.id,
-          data: balance.payload.doc.data()
-        });
-      })
-      this.user.BalanceList = []
-      this.user.BalanceList = this.balance;
-      this.dataService.setData('userList', this.user.UsersList)
+    this.userService.getBalance( this.codeGroup )
+    .then( balance => {
+      this.lottery.BalanceList = []
+      this.lottery.BalanceList = balance;
+      this.dataService.setData('userList', this.lottery.UsersList)
     })
   }
 
   async openPersonalBalanceModel( user: UserListClass ) {
-    user._date = new Date().toISOString()
+    user._amount = 0
     const modal = await this.modalCtrl.create({
       component: ModalPersonalBalancePage,
       componentProps: {
         user: user
       }
     });
-    modal.onDidDismiss().then((userData) => {
-      if (userData.data !== null) {
-        this.setBalance( userData )
+    modal.onDidDismiss().then((newBalance) => {
+      if (newBalance.data !== null) {
+        this.setBalance( newBalance.data, user )
       }
     });
     return await modal.present();
   }
-  setBalance( user ){
+  setBalance( newBalance, user: UserListClass ){
     let data = {
-      amount: user.data.amount,
-      date: new Date( user.data._date ),
-      iduser: user.data.id
+      amount: newBalance.amount,
+      date: new Date( newBalance.date ),
+      iduser: user.uid,
+      codes: this.codeGroup
     }
-    console.log("user ", user, " typeof ", typeof user)
 
     this.userService.addBalance( data )
      .then( res => {
        if ( res.id ) {
-        this.showToast( user.data );
+        this.showToast( user );
        }
     })
   }
 
-  async showToast( user: User ){
+  async showToast( user: UserListClass ){
     const toast = await this.toastCtrl.create({
-      message: `You add some money to ${user._name}'s balance`,
+      message: `You add some money to ${user.name}'s balance`,
       duration: 2000
     });
     toast.present()
