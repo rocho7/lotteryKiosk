@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
-import { Lottery } from '../../classes/user'
-import { UserListClass } from '../../classes/userClassModel'
+import { Lottery } from '../../classes/lottery'
+import { UserListClass, balanceClassModel } from '../../classes/userClassModel'
 import { ModalController, ToastController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
 import { AuthenticationService } from '../../services/authentication.service'
@@ -73,23 +73,32 @@ export class UsersPage implements OnInit {
     });
     modal.onDidDismiss().then((newBalance) => {
       if (newBalance.data !== null) {
-        this.setBalance( newBalance.data, user )
+        this.setBalance( newBalance.data )
       }
     });
     return await modal.present();
   }
-  setBalance( newBalance, user: UserListClass ){
+  setBalance( newBalance: UserListClass ){
+    let newUser = Object.assign( new UserListClass(), newBalance )
+    let balance = new balanceClassModel();
+    balance.amount = newBalance.amount
+    balance.codes = this.codeGroup
+    balance.uid = newBalance.uid
+    balance.date.seconds = Math.floor(<any>new Date(newBalance.date) / 1000)
+    this.lottery.BalanceList.push( balance );
+    this.lottery.BalanceList = this.lottery.BalanceList
+
     let data = {
-      amount: newBalance.amount,
-      date: new Date( newBalance.date ),
-      iduser: user.uid,
+      amount: newUser.amount,
+      date: new Date( newUser.date ),
+      uid: newUser.uid,
       codes: this.codeGroup
     }
 
     this.userService.addBalance( data )
      .then( res => {
        if ( res.id ) {
-        this.showToast( user );
+        this.showToast( newUser );
        }
     })
   }

@@ -44,8 +44,9 @@ export class Lottery {
     set BalanceList( balance ) {
         this._BalanceList = []
         balance.forEach( line =>{
-            let newBalanceLine = Object.assign( new balanceClassModel, line.data )
-            newBalanceLine.idbalance = line.id;
+            let data = line.data ? line.data : line
+            let newBalanceLine = Object.assign( new balanceClassModel, data )
+            newBalanceLine.idbalance = data.id;
             this.BalanceList.push( newBalanceLine );
         })
         this.getRoleEachUser()
@@ -71,7 +72,7 @@ export class Lottery {
         let totalPersonalBalance = 0;
         userLine.dateAndAmount = []
         this.BalanceList.forEach( balanceLine =>{
-            if ( balanceLine.iduser === userLine.uid ){
+            if ( balanceLine.uid === userLine.uid ){
                 totalPersonalBalance += balanceLine.amount
                 userLine.total = totalPersonalBalance
                 userLine.storeDateAndAmountEachPlayer( balanceLine )

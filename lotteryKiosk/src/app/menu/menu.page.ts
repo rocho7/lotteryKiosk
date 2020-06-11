@@ -3,7 +3,7 @@ import { NavController } from '@ionic/angular'
 import { Router, RouterEvent } from '@angular/router'
 import { AuthenticationService } from '../services/authentication.service'
 import { UsersService } from '../providers/users.service'
-import { Lottery } from '../classes/user'
+import { Lottery } from '../classes/lottery'
 import { DataService } from '../providers/data-service.service'
 import { error } from 'protractor';
 

@@ -1,3 +1,4 @@
+import { Lottery } from 'src/app/classes/lottery'
 export class UserListClass {
     id: string
     uid: string
@@ -36,14 +37,20 @@ export class UserListClass {
         return this._total
     }
     set total ( value ) {
-        console.log("total ", value)
         this._total = value;
+        // let lotteryClass = new Lottery()
+        // lotteryClass.UsersList =
+    }
+    getObjectUser(){
+        let obj = {}
+            if( this.email ) obj.email = this.email
+            if( this.idrole ) obj.idrole = this.idrole
+        return obj
     }
     get amount(){
         return this._amount
     }
     set amount ( value ) {
-        console.log("amount ", value)
         this._amount = value;
         this.total += this._amount
     }
@@ -67,6 +74,9 @@ export function roleClassModel() {
     this.role = "";
 }
 export function balanceClassModel() {
+    this.codes = "";
+    this.uid = "";
     this.idbalance = "";
     this.amount = null;
+    this.date = {seconds: null};
 }

@@ -33,6 +33,7 @@ export class ModalPersonalBalancePage implements OnInit {
   
   Accept( data ) {
     this.user.amount = data.amount;
+    this.user.date = data.date
     if ( data.amount ) {
       this.modalCtrl.dismiss( this.user ) 
     }
