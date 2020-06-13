@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular'
 import { BetsService } from '../../providers/bets.service'
 import { ConfigLotteriesService } from '../../providers/config-lotteries.service'
 import { MessagesService } from '../../providers/messages.service'
+import { DataService } from 'src/app/providers/data-service.service';
 @Component({
   selector: 'app-bets',
   templateUrl: './bets.page.html',
@@ -21,7 +22,7 @@ export class BetsPage implements OnInit {
   indexSelected: number = 0
 
   constructor( private fb: FormBuilder, private betService: BetsService, private lotteryService: ConfigLotteriesService,
-    private alertCtrl: AlertController, private messageService: MessagesService) {
+    private alertCtrl: AlertController, private messageService: MessagesService, private dataService: DataService) {
     (<any>window).lottery = this.lottery;
    }
 
@@ -43,24 +44,24 @@ export class BetsPage implements OnInit {
       res.forEach(element => {
         if ( element.payload.doc.exists ) {
           this.lottery.kindOfBets.push( element.payload.doc.data() )
-          this.getBets()
         }
       });
+      this.getBets()
     })
   }
 
   getBets(){
     this.betService.getBetFromDB()
-    .subscribe( res => {
+    .then( res => {
       let carga = []
       console.log("controls ", <FormArray>this.form_validations.controls.eachLottery)
 
-      if ( res.length > 0 && res[0].payload.doc.exists ){
-        res.forEach( line => {
-          let newBet = Object.assign( new Bet(), line.payload.doc.data() );
-          newBet.referenciaDB = line.payload.doc.ref.id
+      if ( res.length > 0 ){
+        for( let i = 0; i < res.length; i ++ ){
+          let newBet = Object.assign( new Bet(), res[i] );
+          newBet.referenciaDB = res[i].id
           carga.push( newBet )
-        });
+        }
         this.lottery.betLines = carga
         if ( carga ) {
           let controls = <FormArray>this.form_validations.controls.eachLottery;

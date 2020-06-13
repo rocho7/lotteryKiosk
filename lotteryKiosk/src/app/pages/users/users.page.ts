@@ -30,7 +30,7 @@ export class UsersPage implements OnInit {
     this.activatedRoute.queryParams.subscribe( group =>{
       console.log(group)
 
-      this.codeGroup = group.code
+      this.codeGroup = group.code || this.dataService.getData('codeGroup')
       if ( this.codeGroup ) {
         this.userService.getUsers( this.codeGroup )
         .then( userList => {

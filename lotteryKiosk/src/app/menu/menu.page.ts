@@ -6,6 +6,7 @@ import { UsersService } from '../providers/users.service'
 import { Lottery } from '../classes/lottery'
 import { DataService } from '../providers/data-service.service'
 import { error } from 'protractor';
+import { StorageService } from '../services/store/storage.service';
 
 @Component({
   selector: 'app-menu',
@@ -22,28 +23,24 @@ export class MenuPage implements OnInit {
 
   pages = [
     {
-      name: 'List of groups',
-      path: '/menu/group-list'
-    },
-    {
       name: 'Dashboard',
       path: '/menu/dashboard'
     },
     {
-      name: 'Users',
-      path: '/menu/users'
+      name: 'List of groups',
+      path: '/menu/tabs/group-list'
     },
-    {
-      name: 'Calendar',
-      path: '/menu/calendar'
-    },
-    {
-      name: 'Bets',
-      path: '/menu/bets'
-    }
+    // {
+    //   name: 'Calendar',
+    //   path: '/menu/calendar'
+    // },
+    // {
+    //   name: 'Bets',
+    //   path: '/menu/bets'
+    // }
   ]
   constructor( private navCtrl: NavController, private router: Router,  private authService: AuthenticationService, 
-    private userService: UsersService, private dataService: DataService ) {
+    private userService: UsersService, private dataService: DataService, private storage: StorageService ) {
     this.router.events.subscribe(( event: RouterEvent ) =>{
       this.activePath = event.url
       let currentPageIndex = null
@@ -99,6 +96,8 @@ export class MenuPage implements OnInit {
     this.authService.loginOutUser()
     .then( res => {
       if ( res ) {
+        this.storage.remove('userInfo')
+        this.storage.remove('lastGroupCodeSelected')
         this.navCtrl.navigateRoot('/login')
       }
     }).catch( error =>{

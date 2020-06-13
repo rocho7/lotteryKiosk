@@ -7,14 +7,19 @@ import { NavController } from '@ionic/angular'
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  user: object
   constructor( private authService: AuthenticationService, private navCtrl: NavController ){}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if ( !this.authService.isLogIn ){
-        this.navCtrl.navigateRoot('/login')
-      }
+      
+      this.user ={
+        ...this.authService.userDetails()
+      } 
+      
+      if ( !this.user.hasOwnProperty('uid') ) this.navCtrl.navigateRoot('/login')
+      
     return this.authService.isLogIn;
   }
   

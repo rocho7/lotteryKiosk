@@ -30,6 +30,7 @@ export class Lottery {
       }
 }
 export class Bet{
+   codes:string
    referenciaDB: string
    idType: number
    _combination1: any

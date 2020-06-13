@@ -33,7 +33,7 @@ export class FormGroupPage implements OnInit {
     this.groupService.getAllCodes()
     .subscribe( codes => {
       codes.forEach( line => {
-        this.codeList.push( line.payload.doc.data().code )      
+        this.codeList.push( line.payload.doc.data()['code'] )      
       });
     })
   }
@@ -51,7 +51,7 @@ export class FormGroupPage implements OnInit {
           code
         }
       }
-    this.groupService.createGroup( value, code, this.user.uid )
+    this.groupService.createGroup( value, code, this.user['uid'] )
     .then( res => this.navCtrl.navigateForward('/group-code', navigationExtras) )
     .catch( err => console.log("err ", err )  )
     }

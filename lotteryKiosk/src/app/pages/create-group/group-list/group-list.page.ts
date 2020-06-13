@@ -5,7 +5,9 @@ import { take } from 'rxjs/operators'
 import { UsersService } from 'src/app/providers/users.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationExtras } from '@angular/router'
-
+import { StorageService } from 'src/app/services/store/storage.service'
+import * as firebase from 'firebase'
+import { DataService } from 'src/app/providers/data-service.service';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.page.html',
@@ -18,22 +20,24 @@ export class GroupListPage implements OnInit {
   userObserver: any
   
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
-    private authService: AuthenticationService, private navCtrl: NavController ) { 
+    private authService: AuthenticationService, private navCtrl: NavController, private storage: StorageService,
+    private dataService: DataService ) { 
     this.userObserver = this.userService.userWatcher$
-    // console.log("current ", this.authService.currentUser)
-    // console.log("details ", this.authService.userDetails())
-
+    
+    
+    console.log("current ", this.authService.currentUser)
+    console.log("details ", this.authService.userDetails())
+    
   }
 
 
   ngOnInit() {
-    this.userObserver
-    .subscribe( res => {
+    this.userObserver.subscribe( res => {
       console.log("observable ", res)
       this.userList = []
       this.userList = res
       
-    this.getUserGroups()
+      this.getUserGroups()
     })
   }
  
@@ -47,7 +51,7 @@ export class GroupListPage implements OnInit {
         this.userList.forEach( lineUser => {
           if ( lineUser.hasOwnProperty('codes') ){
             lineUser.codes.forEach( ( codeUser , index ) => {
-              if ( codeUser === group.payload.doc.data().code ){
+              if ( codeUser === group.payload.doc.data()['code'] ){
                 this.groupList.push( {
                   data: group.payload.doc.data(),
                   id: group.payload.doc.id
@@ -55,8 +59,20 @@ export class GroupListPage implements OnInit {
               }
             });
           }
-        });  
+        });
       });
+      if ( this.groupList.length > 0 ){
+        let isGroupSelected = null
+        this.storage.get('lastGroupCodeSelected')
+        .then( code => {
+          console.log("code ", code)
+          
+            isGroupSelected = code || this.groupList[0].data.code
+            console.log("this.grouplist ", this.groupList)
+            this.setGroupSelected( isGroupSelected )
+          
+        })
+      }
     })
   }
 
@@ -78,7 +94,9 @@ export class GroupListPage implements OnInit {
         code: group.data.code
       }
     }
-    this.navCtrl.navigateForward('/menu/users', navigationExtras)
+    this.setGroupSelected( group.data.code )
+
+    this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
   }
 
   async presentAlertConfirm() {
@@ -103,6 +121,12 @@ export class GroupListPage implements OnInit {
     await alert.present();
     const result = await alert.onDidDismiss();  
     return result
+  }
+
+  
+  setGroupSelected( code ) {
+    this.storage.set('lastGroupCodeSelected', code)
+    this.dataService.setData('codeGroup', code)
   }
 
 }

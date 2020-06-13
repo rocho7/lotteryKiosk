@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular'
 
-import { Lottery } from '../../classes/user'
 import { DataService } from '../../providers/data-service.service'
 
 @Component({
@@ -13,7 +12,6 @@ export class CalendarPage implements OnInit {
 
   eventSource;
   viewTitle;
-//   lottery = new Lottery();
   dateUser = []
 
   isToday:boolean;

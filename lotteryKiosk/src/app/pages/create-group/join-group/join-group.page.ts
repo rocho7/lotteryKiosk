@@ -39,7 +39,7 @@ export class JoinGroupPage implements OnInit {
     this.groupService.getAllCodes()
     .subscribe( codes =>{
       codes.forEach( line => {
-      this.listCodes.push( line.payload.doc.data().code )
+      this.listCodes.push( line.payload.doc.data()['code'] )
       });
     this.codeExist( value.code )
     })

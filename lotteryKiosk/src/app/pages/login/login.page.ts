@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular'
 import { AuthenticationService } from '../../services/authentication.service'
-import { MenuPage } from '../../menu/menu.page'
+import { StorageService } from 'src/app/services/store/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +13,11 @@ export class LoginPage implements OnInit {
 
   validations_form: FormGroup;
   errorMessage: string = '';
+  userInfo: any
 
-  constructor( private navCtrl: NavController, private authService: AuthenticationService, private formBuilder: FormBuilder) { }
-
+  constructor( private navCtrl: NavController, private authService: AuthenticationService, private formBuilder: FormBuilder,
+    private storage: StorageService) { }
+  
   ngOnInit() {
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
@@ -26,6 +28,11 @@ export class LoginPage implements OnInit {
         Validators.minLength(6),
         Validators.required
       ]))
+    })
+    this.storage.get("userInfo")
+    .then( user => {
+      this.userInfo = user;
+      if ( this.userInfo ) this.validations_form.controls['email'].setValue(this.userInfo.userInfoFireBase.providerData[0].email)
     })
   }
   validation_messages = {
@@ -41,9 +48,8 @@ export class LoginPage implements OnInit {
   loginUser( value ) {
     this.authService.loginUser( value )
     .then( res => {
-      console.log("res 2", res);
       this.errorMessage = '';
-      this.navCtrl.navigateRoot('/menu/group-list')
+      this.navCtrl.navigateRoot('/menu/tabs/group-list')
     }, err =>{
       this.errorMessage = err.message
     })

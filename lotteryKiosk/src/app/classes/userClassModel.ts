@@ -38,13 +38,11 @@ export class UserListClass {
     }
     set total ( value ) {
         this._total = value;
-        // let lotteryClass = new Lottery()
-        // lotteryClass.UsersList =
     }
     getObjectUser(){
         let obj = {}
-            if( this.email ) obj.email = this.email
-            if( this.idrole ) obj.idrole = this.idrole
+            if( this.email ) obj['email'] = this.email
+            if( this.idrole ) obj['idrole'] = this.idrole
         return obj
     }
     get amount(){
