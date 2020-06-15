@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>{{ 'LOGIN.TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -48,6 +48,6 @@
    <label class="error-message">{{errorMessage}}</label>
 
    <p class="go-to-register">
-    No account yet? <a (click)="goToRegisterPage()">Create an account.</a>
+    {{ 'LOGIN.NOACCOUNT' | translate }} <a (click)="goToRegisterPage()">{{ 'LOGIN.CREATEACCOUNT' | translate }}</a>
   </p>
 </ion-content>

@@ -18,6 +18,7 @@ export class GroupListPage implements OnInit {
   groupList = []
   userList = []
   userObserver: any
+  isGroupSelected: string
   
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
     private authService: AuthenticationService, private navCtrl: NavController, private storage: StorageService,
@@ -62,14 +63,14 @@ export class GroupListPage implements OnInit {
         });
       });
       if ( this.groupList.length > 0 ){
-        let isGroupSelected = null
+        
         this.storage.get('lastGroupCodeSelected')
         .then( code => {
           console.log("code ", code)
           
-            isGroupSelected = code || this.groupList[0].data.code
+            this.isGroupSelected = code || this.groupList[0].data.code
             console.log("this.grouplist ", this.groupList)
-            this.setGroupSelected( isGroupSelected )
+            this.setGroupSelected( this.isGroupSelected )
           
         })
       }

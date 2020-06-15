@@ -18,12 +18,12 @@ const routes: Routes = [
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule),
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/create-group/group-index/group-index.module').then( m => m.GroupIndexPageModule)
   },
   // {

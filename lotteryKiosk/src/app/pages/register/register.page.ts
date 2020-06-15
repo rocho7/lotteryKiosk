@@ -26,9 +26,10 @@ export class RegisterPage implements OnInit {
   };
 
   constructor( private authService: AuthenticationService, private fb: FormBuilder, private navCtrl: NavController,
-    private userService: UsersService ) { }
+    private userService: UsersService) { }
 
   ngOnInit() {
+
     this.validations_form = this.fb.group({
       name: new FormControl('', Validators.compose([
         Validators.required,
@@ -45,10 +46,14 @@ export class RegisterPage implements OnInit {
         Validators.required,
         Validators.minLength(6)
       ])),
+      language: new FormControl(''),
       acceptedProtectionLaw: new FormControl(false, Validators.compose([
         Validators.requiredTrue
       ]))
     })
+  }
+  getIdiomFromChild( language ){
+    this.validations_form.get('language').setValue( language )
   }
   tryRegister( value ) {
     console.log("value ", value)
@@ -62,6 +67,7 @@ export class RegisterPage implements OnInit {
       user.name = value.name
       user.acceptedProtectionLaw = value.acceptedProtectionLaw
       user.idrole = user.idrole
+      user.language = value.language
       
       this.registerNewAccount( user, value )
     }, err =>{
@@ -95,5 +101,4 @@ export class RegisterPage implements OnInit {
   goLoginPage(){
     this.navCtrl.navigateBack('')
   }
-
 }

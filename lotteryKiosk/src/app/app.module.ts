@@ -17,6 +17,15 @@ import { environment } from '../environments/environment'
 import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms';
 
+//TRANSLATE MODULE 
+import { HttpClientModule, HttpClient } from '@angular/common/http'
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
+import { TranslateHttpLoader } from '@ngx-translate/http-loader'
+import { LanguagesService } from 'src/app/services/languages.service'
+
+export function createTranslateLoader( http: HttpClient ) {
+  return new TranslateHttpLoader( http, 'assets/i18n/', '.json')
+}
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,9 +37,18 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularFireModule.initializeApp( environment.firebaseConfig),
     AngularFireDatabaseModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
+    LanguagesService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

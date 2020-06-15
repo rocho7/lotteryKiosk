@@ -23,7 +23,8 @@ export class UsersService {
       name : user.name,
       registerDate : new Date(),
       acceptedProtectionLaw: user.acceptedProtectionLaw,
-      idrole: user.idrole
+      idrole: user.idrole,
+      language: user.language
     }
     return this.firestore.collection('users').doc( user.uid ).set( data )
     .then( res =>{

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>{{ "REGISTER.TITLE" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,15 +8,15 @@
 
   <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
     <ion-item>
-      <ion-label position="floating" color="primary">Name</ion-label>
+      <ion-label position="floating" color="primary">{{ "REGISTER.NAME" | translate }}</ion-label>
       <ion-input type="text" formControlName="name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating" color="primary">Nick</ion-label>
+      <ion-label position="floating" color="primary">{{ "REGISTER.NICK" | translate }}</ion-label>
       <ion-input type="text" formControlName="nick"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating" color="primary">Email</ion-label>
+      <ion-label position="floating" color="primary">{{ "REGISTER.EMAIL" | translate }}</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
     </ion-item>
     <div class="validation-erros">
@@ -29,7 +29,7 @@
     </div>
 
     <ion-item>
-      <ion-label position="floating" color="primary">Password</ion-label>
+      <ion-label position="floating" color="primary">{{ "REGISTER.PASSWORD" | translate }}</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
     <div class="validation-erros">
@@ -40,8 +40,11 @@
         </div>
       </ng-container>
     </div>
+
+      <app-languages (idiom)="getIdiomFromChild( $event )"></app-languages>
+
     <ion-item>
-      <ion-label>Acepto las condiciones de uso y política de privacidad</ion-label>
+      <ion-label>{{ "REGISTER.PRIVACYLOW" | translate }}</ion-label>
       <ion-checkbox formControlName="acceptedProtectionLaw"></ion-checkbox>
     </ion-item>
 

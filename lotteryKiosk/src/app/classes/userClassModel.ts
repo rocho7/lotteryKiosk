@@ -14,6 +14,7 @@ export class UserListClass {
     registerDate: Date
     dateAndAmount = []
     acceptedProtectionLaw: boolean = false
+    language: string
     
     get name(){
         return this._name

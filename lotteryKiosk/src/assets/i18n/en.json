@@ -1,0 +1,17 @@
+{
+    "LOGIN":{
+        "TITLE": "Login",
+        "NOACCOUNT": "No account yet?",
+        "CREATEACCOUNT": "Create an account.",
+        "PASSWORD": "Password"
+    },
+    "REGISTER":{
+        "TITLE": "Register",
+        "NAME": "Name",
+        "NICK": "Nick",
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
+        "CHOOSELANGUAGE": "Choose a language",
+        "PRIVACYLOW": "I accept the terms of use and privacy policy."
+    }
+}

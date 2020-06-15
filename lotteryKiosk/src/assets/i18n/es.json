@@ -1,0 +1,17 @@
+{
+    "LOGIN":{
+        "TITLE": "Login",
+        "NOACCOUNT": "¿No has creado una cuenta aún?",
+        "CREATEACCOUNT": "Crear una cuenta.",
+        "PASSWORD": "Contraseña"
+    },
+    "REGISTER":{
+        "TITLE": "Registro",
+        "NAME": "Nombre",
+        "NICK": "Apado",
+        "EMAIL": "Correo electrónico",
+        "PASSWORD": "Contraseña",
+        "CHOOSELANGUAGE": "Elige un lenguaje",
+        "PRIVACYLOW": "Acepto las condiciones de uso y politica de privacidad"
+    }
+}
