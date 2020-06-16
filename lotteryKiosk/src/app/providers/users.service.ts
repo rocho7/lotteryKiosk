@@ -51,6 +51,7 @@ export class UsersService {
         
         resolve( this.users )
       })
+      .catch( err => reject(err))
     }) 
   }
   getUser( uid ) {

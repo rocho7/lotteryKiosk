@@ -72,7 +72,7 @@ export class BetsPage implements OnInit {
               combination1: this.setCombinationNumber( carga[i].combination1 ),
               extranumber: this.setCombinationNumber( carga[i].extras ),
               idType: carga[i].idType,
-              ref: carga[i].referenciaDB
+              referenciaDB: carga[i].referenciaDB
             }))
           }
         }
@@ -100,30 +100,44 @@ export class BetsPage implements OnInit {
       this.fb.group({
       combination1: this.setCombinationNumber( Array( newBet.combinationLength ).fill( null )),
       extranumber: this.setCombinationNumber( Array( newBet.extraNumber ).fill( null ) ),
-      idType: newBet.idType
+      idType: newBet.idType,
+      referenciaDB: ''
       })
     )    
   }
   Accept( data ) {
     let controls = (<FormArray>this.form_validations.get('eachLottery')).at( this.indexSelected )
+    console.log("controls ", controls)
     let newBet: Bet
     if ( controls.status === "VALID" ){
       newBet = Object.assign( new Bet(), controls.value )      
     }
     
     this.betService.setBetToDB( newBet )
-    .then( res => console.log("res bet page ", res))
+    .then( res => {
+      newBet.referenciaDB = res.id
+      controls.get('referenciaDB').setValue(newBet.referenciaDB)
+    console.log("controls ", controls)
+
+      console.log("res bet page ", res)
+    })
   }
   deleteBet( id ) {
-    if ( this.presentAlertConfirm() ){
-      let controls = (<FormArray>this.form_validations.get('eachLottery')).at( id )
-      let newBet: Bet
-      if ( controls.status === "VALID" ){
-        newBet = Object.assign( new Bet(), controls.value )      
-      }
-      this.betService.removeBet( newBet )
-      .then( res => console.log(res))  
-    }
+    this.presentAlertConfirm()
+    .then( isBetDeleted => {
+      if ( isBetDeleted.role === 'accept' ){
+        let controls = (<FormArray>this.form_validations.get('eachLottery')).at( id )
+        let newBet: Bet
+        if ( controls.status === "VALID" ){
+          newBet = Object.assign( new Bet(), controls.value )      
+        }
+        this.betService.removeBet( newBet )
+        .then( res => {
+          (<FormArray>this.form_validations.get('eachLottery')).removeAt( id )
+          console.log(res)
+        })
+      }      
+    })    
   }
 
   handleTypeOfBetInTemplate( idType ) {
@@ -138,18 +152,20 @@ export class BetsPage implements OnInit {
         {
           text: 'Cancel',
           role:'cancel',
-          handler: ( blah )=> console.log("blah ", blah)
+          handler: ()=>{}
         },
         {
           text: 'Accept',
-          handler: ( blah )=> {
-            console.log("blah ", blah)
+          role: 'accept',
+          handler: ( )=> {            
             return true;
           }
         }
       ]
     });
-    await alert.present()
+    await alert.present();
+    const result = await alert.onDidDismiss();  
+    return result
   }
 
   displayMessageInTemplate( type ) {

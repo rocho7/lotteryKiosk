@@ -38,7 +38,8 @@ export class UsersPage implements OnInit {
           this.lottery.UsersList = [];
           this.lottery.UsersList = userList
           this.setUsersList()
-        })  
+        })
+        .catch( err => console.log("error ", err))
       }
     })
   }

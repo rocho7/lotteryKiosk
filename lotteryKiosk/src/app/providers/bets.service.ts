@@ -33,7 +33,7 @@ export class BetsService {
     }
   }
   removeBet( bet ) {
-    return this.fb.collection('bets').doc( bet.ref ).delete()
+    return this.fb.collection('bets').doc( bet.referenciaDB ).delete()
     .then( res => res )
     .catch( error => error )
   }
