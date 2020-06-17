@@ -47,9 +47,8 @@ export class GroupService {
   getAllGroups(){
     return this.fb.collection('group').snapshotChanges()
   }
-  removeGroup( uid ) {
-    return this.fb.collection('group').doc( uid ).delete()
-    .then( res => res )
-    .catch( err => err )
+  async removeGroup( uid ) {
+    let deleteGroup = await this.fb.collection('group').doc( uid ).delete()
+    return deleteGroup
   }
 }

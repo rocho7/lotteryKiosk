@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupService } from 'src/app/providers/group.service';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { take } from 'rxjs/operators'
 import { UsersService } from 'src/app/providers/users.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -8,6 +8,7 @@ import { NavigationExtras } from '@angular/router'
 import { StorageService } from 'src/app/services/store/storage.service'
 import * as firebase from 'firebase'
 import { DataService } from 'src/app/providers/data-service.service';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.page.html',
@@ -16,13 +17,13 @@ import { DataService } from 'src/app/providers/data-service.service';
 export class GroupListPage implements OnInit {
 
   groupList = []
-  userList = []
+  currentUser = []
   userObserver: any
   isGroupSelected: string
   
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
     private authService: AuthenticationService, private navCtrl: NavController, private storage: StorageService,
-    private dataService: DataService ) { 
+    private dataService: DataService, private toastCtrl: ToastController ) { 
     this.userObserver = this.userService.userWatcher$
     
     
@@ -35,8 +36,8 @@ export class GroupListPage implements OnInit {
   ngOnInit() {
     this.userObserver.subscribe( res => {
       console.log("observable ", res)
-      this.userList = []
-      this.userList = res
+      this.currentUser = []
+      this.currentUser = res
       
       this.getUserGroups()
     })
@@ -49,7 +50,7 @@ export class GroupListPage implements OnInit {
       this.groupList = []
       
       groups.forEach( group => {
-        this.userList.forEach( lineUser => {
+        this.currentUser.forEach( lineUser => {
           if ( lineUser.hasOwnProperty('codes') ){
             lineUser.codes.forEach( ( codeUser , index ) => {
               if ( codeUser === group.payload.doc.data()['code'] ){
@@ -77,16 +78,23 @@ export class GroupListPage implements OnInit {
     })
   }
 
-  deleteGroup( group ) {
-    this.presentAlertConfirm()
-    .then( isDeleted => {
-      if ( isDeleted.role === 'accpet' ){
-        let uid = group.id
-        this.groupService.removeGroup( uid )
-        .then( res => res)
-        .catch( err => err )
-      }      
-    })
+  async deleteGroup( group ) {
+    if ( this.currentUser[0].idrole === 'ROLE_AD' ){
+      let isDeleted = await this.presentAlertConfirm()
+        if ( isDeleted.role === 'accept' ){
+          let uid = group.id
+          let groupRemoved = await this.groupService.removeGroup( uid )
+          if ( groupRemoved ){
+            this.storage.remove('lastGroupCodeSelected')
+            this.getUserGroups()
+          }
+        }      
+    }else{
+      let message = "You can not delete a group. You are not ADMIN"
+      let type = 'warning'
+      this.showToast( message, type )
+    }
+    
   }
 
   goToUserList( group ) {
@@ -128,6 +136,14 @@ export class GroupListPage implements OnInit {
   setGroupSelected( code ) {
     this.storage.set('lastGroupCodeSelected', code)
     this.dataService.setData('codeGroup', code)
+  }
+  async showToast( message, type ){
+    let toast = await this.toastCtrl.create({
+      message: message,
+      color: type,
+      duration: 2000
+    })
+    toast.present()
   }
 
 }

@@ -66,6 +66,7 @@ export class UsersService {
     .then( res => res )
     .catch( err => err)
   }
+  
   getRoles(){
     return this.roles = this.firestore.collection('usersRole').snapshotChanges();
   }
@@ -84,10 +85,8 @@ export class UsersService {
         resolve( balance )
       })
     })
-    // return this.amount = this.firestore.collection('balance').snapshotChanges();
   }
   addBalance( amount: object ){
-    // return this.firestore.collection('balance').doc( idbalance ).set( amount )
     return this.firestore.collection('balance').add( amount )
     .then( res =>{
       return res

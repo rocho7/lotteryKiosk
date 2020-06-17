@@ -4,6 +4,7 @@ import * as firebase from 'firebase'
 import { Observable } from 'rxjs';
 import { UsersService } from '../providers/users.service';
 import { StorageService } from 'src/app/services/store/storage.service'
+import { AngularFirestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,8 @@ export class AuthenticationService {
   currentUser = []
   userObserver: any
 
-  constructor( private afAuth : AngularFireAuth, private userService: UsersService, private storage: StorageService ) { 
+  constructor( private afAuth : AngularFireAuth, private userService: UsersService, private storage: StorageService,
+    private firestore: AngularFirestore ) { 
     this.userObserver = this.userService.userWatcher$
   }
 
@@ -35,6 +37,22 @@ export class AuthenticationService {
         },
         err => reject(err))
     })
+  }
+  async removeUser ( uid ){
+    let deleteAuthUser = null
+     let responseUserDB = await this.firestore.collection('users').doc( uid ).delete()
+    .then( res => {
+      return true      
+    }).catch( err => err )
+    
+    if( responseUserDB ) {
+      deleteAuthUser =  await this.userDetails().delete()
+        .then( deletedFromAuthenticationDB => {
+          return true 
+        })
+        .catch( err =>  err )
+    }
+    return deleteAuthUser
   }
   loginOutUser(){
     return new Promise((resolve, reject)=>{

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { Lottery } from '../../classes/lottery'
 import { UserListClass, balanceClassModel } from '../../classes/userClassModel'
-import { ModalController, ToastController } from '@ionic/angular'
+import { ModalController, ToastController, AlertController, NavController } from '@ionic/angular'
 import { ModalPersonalBalancePage } from './modal-personal-balance/modal-personal-balance.page'
 import { AuthenticationService } from '../../services/authentication.service'
 import { DataService } from '../../providers/data-service.service'
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'src/app/services/store/storage.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -18,11 +19,18 @@ export class UsersPage implements OnInit {
   list: any
   roleList = [];
   codeGroup:string = ''
+  userObserver: any
+  currentUser = []
 
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
-    private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute ) {
+    private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
+    private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService ) {
     (<any>window).lottery = this.lottery;
     console.log( this.authService.userDetails() )
+      this.userObserver = this.userService.userWatcher$
+      this.userObserver.subscribe( user => {
+        this.currentUser = user[0]
+      })
    }
 
   ngOnInit() {
@@ -32,7 +40,17 @@ export class UsersPage implements OnInit {
 
       this.codeGroup = group.code || this.dataService.getData('codeGroup')
       if ( this.codeGroup ) {
-        this.userService.getUsers( this.codeGroup )
+        this.getUsers()
+      }else{
+        let message = 'No players in user section. Please select a group'
+        let type = 'warning'
+        this.showToast( message, type )
+        this.navCtrl.navigateRoot('/menu/tabs/group-list')
+      }
+    })
+  }
+  getUsers() {
+    this.userService.getUsers( this.codeGroup )
         .then( userList => {
           console.log("userList ", userList)
           this.lottery.UsersList = [];
@@ -40,8 +58,6 @@ export class UsersPage implements OnInit {
           this.setUsersList()
         })
         .catch( err => console.log("error ", err))
-      }
-    })
   }
   setUsersList(){
     this.userService.getRoles().subscribe( data => {
@@ -99,14 +115,74 @@ export class UsersPage implements OnInit {
     this.userService.addBalance( data )
      .then( res => {
        if ( res.id ) {
-        this.showToast( newUser );
+         let message =`You add some money to ${newUser.name}'s balance`
+         let color = 'success'
+        this.showToast( message, color );
        }
     })
   }
 
-  async showToast( user: UserListClass ){
+  async deleteUser( user: UserListClass ){
+    let userDeleted = this.lottery.UsersList.filter( userLine => userLine.uid === user.uid )
+      console.log("userDeleted ", userDeleted)
+    let isDeleted = null
+    if ( this.currentUser['uid'] === user.uid ) {
+          isDeleted = await this.deleteUserAndConfirm( user )
+
+          if ( isDeleted ){
+            this.storage.remove('userInfo')
+            this.storage.remove('lastGroupCodeSelected')
+            this.navCtrl.navigateRoot('/login')
+          }
+    }else {
+      if ( this.currentUser['idrole'] === 'ROLE_AD' ){
+        isDeleted = await this.deleteUserAndConfirm( user)
+      }
+      let message = "You can not delete an user. You are not ADMIN"
+      let color = 'warning'
+      this.showToast( message, color );
+
+    }    
+  }
+  async deleteUserAndConfirm(user : UserListClass) {
+      let isUserDeleted = await this.presentAlertConfirm()
+
+      if (isUserDeleted.role === 'remove') {
+          let authUser = await this.deleteAuthUser(user)
+          return authUser
+      }
+  }
+
+  async deleteAuthUser(user : UserListClass) {
+      let removeUser = await this.authService.removeUser(user.uid)
+      return removeUser
+  }
+
+
+  async presentAlertConfirm(){
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm',
+      message: 'Do you really want to delete this user?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Remove',
+          role: 'remove'
+        }
+      ]
+    });
+    await alert.present()
+    let result = await alert.onDidDismiss()
+    return result
+  }
+
+  async showToast( message: string, color ){
     const toast = await this.toastCtrl.create({
-      message: `You add some money to ${user.name}'s balance`,
+      message: message,
+      color: color,
       duration: 2000
     });
     toast.present()
