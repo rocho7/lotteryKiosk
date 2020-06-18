@@ -28,7 +28,7 @@ export class AuthenticationService {
   }
   loginUser( value ) {
     return new Promise<any> (( resolve, reject )=>{
-      this.afAuth.signInWithEmailAndPassword( value.email, value.password)
+      this.afAuth.signInWithEmailAndPassword( value.email.trim(), value.password)
       .then( res => {
         this.isLogIn = true;
         this.userService.getUser( firebase.auth().currentUser.uid )
@@ -44,7 +44,7 @@ export class AuthenticationService {
     .then( res => {
       return true      
     }).catch( err => err )
-    
+
     if( responseUserDB ) {
       deleteAuthUser =  await this.userDetails().delete()
         .then( deletedFromAuthenticationDB => {

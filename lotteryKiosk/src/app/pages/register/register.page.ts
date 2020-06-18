@@ -36,7 +36,7 @@ export class RegisterPage implements OnInit {
         Validators.pattern('^[a-zA-Z ]+$')
       ])),
       nick: new FormControl('', Validators.compose([
-        Validators.pattern('^[a-zA-Z ]+$')
+        Validators.pattern('^[a-zA-Z0-9 ]+$')
       ])),
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -57,21 +57,21 @@ export class RegisterPage implements OnInit {
   }
   tryRegister( value ) {
     console.log("value ", value)
+
     this.authService.registerUser(value)
     .then( res => {
-      console.log("auth register ", res);
       let user = new UserListClass();
-      user.uid = res.user.uid
-      user.email = res.user.email
-      user._nick = value.nick
-      user.name = value.name
+      user.uid = res.user.uid.trim()
+      user.email = res.user.email.trim()
+      user._nick = value.nick.trim()
+      user.name = value.name.trim()
       user.acceptedProtectionLaw = value.acceptedProtectionLaw
-      user.idrole = user.idrole
-      user.language = value.language
+      user.idrole = user.idrole.trim()
+      user.language = value.language.trim()
+      user.avatar = value.avatar
       
       this.registerNewAccount( user, value )
     }, err =>{
-      console.log("err ", err);
       this.errorMessage = err.message;
       this.successMessage = ''
     })
@@ -80,7 +80,6 @@ export class RegisterPage implements OnInit {
 
     this.userService.registerAccountDB( user )
     .then( userRegistered => {
-      console.log("userRegistered ", userRegistered)
       
     this.errorMessage = '';
     this.successMessage = "Your account has been created. Please long in."
@@ -88,7 +87,6 @@ export class RegisterPage implements OnInit {
     this.login( value )
 
     }).catch( err =>{
-      console.log("err ", err);
       this.errorMessage = err.message;
       this.successMessage = ''
     })

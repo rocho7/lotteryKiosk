@@ -12,8 +12,9 @@
 <ion-list *ngIf="lottery.UsersList.length > 0">
   <ion-item-sliding *ngFor="let user of lottery.UsersList">
     <ion-item>
-      <ion-avatar slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      <ion-avatar slot="start" [ngStyle]="{'background-color': user.avatar.background, 'color': user.avatar.color}">
+        <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+        {{ user.avatar.letter }}
       </ion-avatar>
       <ion-label>
         <h2>{{user.name}}</h2>

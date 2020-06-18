@@ -15,11 +15,12 @@ export class UserListClass {
     dateAndAmount = []
     acceptedProtectionLaw: boolean = false
     language: string
+    _avatar = {}
     
     get name(){
         return this._name
     }
-    set name ( value ) {
+    set name ( value ) {        
         this._name = value;
     }
     get email(){
@@ -39,6 +40,16 @@ export class UserListClass {
     }
     set total ( value ) {
         this._total = value;
+    }
+    get avatar(){
+        return this._avatar
+    }
+    set avatar ( value ) {
+        if ( !value ) {
+            this.setAvatar()
+        }else {
+        this._avatar = {...value}
+        }
     }
     getObjectUser(){
         let obj = {}
@@ -65,6 +76,25 @@ export class UserListClass {
             amount: balanceLine.amount
         }
         this.dateAndAmount.push( user )
+    }
+    randomBGColor(){
+        let r = Math.floor( Math.random() * 256 )
+        let g = Math.floor( Math.random() * 256 )
+        let b = Math.floor( Math.random() * 256 )
+        let bgColor = `rgb(${r},${g},${b})`
+        return bgColor
+    }
+    splitName( name: string ){
+        return name.split(" ")[1] ? name.split(" ")[0].charAt(0).toUpperCase() + name.split(" ")[1].charAt(0).toUpperCase() : name.split(" ")[0].charAt(0).toUpperCase()
+    }
+    setAvatar(){
+        if ( Object.keys(this.avatar).length === 0 && this.avatar.constructor === Object ) {
+            this._avatar = {
+                letter: this.splitName( this.name ),
+                color: 'white',
+                background: this.randomBGColor()
+            }
+        }
     }
 
 }
