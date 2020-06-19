@@ -48,7 +48,7 @@ export class GroupCodePage implements OnInit {
     toast.present();
   }
   redirectTo(){
-    this.navCtrl.navigateRoot('/menu/group-list')
+    this.navCtrl.navigateRoot('/menu/tabs/group-list')
   }
   
 }

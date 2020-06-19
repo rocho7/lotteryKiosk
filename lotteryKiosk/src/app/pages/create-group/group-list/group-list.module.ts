@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { GroupListPageRoutingModule } from './group-list-routing.module';
 
 import { GroupListPage } from './group-list.page';
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { GroupListPage } from './group-list.page';
     IonicModule,
     GroupListPageRoutingModule
   ],
-  declarations: [GroupListPage]
+  declarations: [GroupListPage, LoaderComponent]
 })
 export class GroupListPageModule {}

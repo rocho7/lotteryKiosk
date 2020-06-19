@@ -9,6 +9,7 @@ import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
 import { LanguagesComponent } from 'src/app/components/languages/languages.component';
 import { TranslateModule } from '@ngx-translate/core'
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { TranslateModule } from '@ngx-translate/core'
     RegisterPageRoutingModule,
     TranslateModule
   ],
-  declarations: [RegisterPage, LanguagesComponent]
+  declarations: [RegisterPage, LanguagesComponent, LoaderComponent]
 })
 export class RegisterPageModule {}

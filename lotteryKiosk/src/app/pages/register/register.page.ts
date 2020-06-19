@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { AuthenticationService } from '../../services/authentication.service'
 import { NavController } from '@ionic/angular'
 import { UserListClass } from '../../classes/userClassModel'
 import { UsersService } from '../../providers/users.service'
-
+import { LoaderComponent } from 'src/app/components/loader/loader.component'
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,6 +14,8 @@ export class RegisterPage implements OnInit {
   validations_form: FormGroup
   errorMessage = ''
   successMessage = ''
+  @ViewChild(LoaderComponent) loader: LoaderComponent;
+
   validation_messages = {
     'email': [
       { type: 'required', message: 'Email is required.' },
@@ -57,6 +59,7 @@ export class RegisterPage implements OnInit {
   }
   tryRegister( value ) {
     console.log("value ", value)
+    this.loader.presentLoading()
 
     this.authService.registerUser(value)
     .then( res => {
@@ -89,12 +92,14 @@ export class RegisterPage implements OnInit {
     }).catch( err =>{
       this.errorMessage = err.message;
       this.successMessage = ''
+      this.loader.hideLoading()
     })
   }
   login( value ){
     
     this.authService.loginUser( value )
     .then( res => this.navCtrl.navigateRoot('/menu/tabs/group-list'))
+    this.loader.hideLoading()
   }
   goLoginPage(){
     this.navCtrl.navigateBack('')

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupService } from 'src/app/providers/group.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { take } from 'rxjs/operators'
@@ -9,6 +9,7 @@ import { StorageService } from 'src/app/services/store/storage.service'
 import * as firebase from 'firebase'
 import { DataService } from 'src/app/providers/data-service.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.page.html',
@@ -16,6 +17,7 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class GroupListPage implements OnInit {
 
+  @ViewChild(LoaderComponent) loader: LoaderComponent
   groupList = []
   currentUser = []
   userObserver: any
@@ -25,11 +27,6 @@ export class GroupListPage implements OnInit {
     private authService: AuthenticationService, private navCtrl: NavController, private storage: StorageService,
     private dataService: DataService, private toastCtrl: ToastController ) { 
     this.userObserver = this.userService.userWatcher$
-    
-    
-    console.log("current ", this.authService.currentUser)
-    console.log("details ", this.authService.userDetails())
-    
   }
 
 
@@ -45,10 +42,10 @@ export class GroupListPage implements OnInit {
  
 
   getUserGroups(){
+    this.loader.presentLoading()
     this.groupService.getAllGroups()
     .subscribe( groups => {
       this.groupList = []
-      
       groups.forEach( group => {
         this.currentUser.forEach( lineUser => {
           if ( lineUser.hasOwnProperty('codes') ){
@@ -82,6 +79,7 @@ export class GroupListPage implements OnInit {
     if ( this.currentUser[0].idrole === 'ROLE_AD' ){
       let isDeleted = await this.presentAlertConfirm()
         if ( isDeleted.role === 'accept' ){
+          this.loader.presentLoading()
           let uid = group.id
           let groupRemoved = await this.groupService.removeGroup( uid )
           if ( groupRemoved ){
@@ -104,7 +102,7 @@ export class GroupListPage implements OnInit {
       }
     }
     this.setGroupSelected( group.data.code )
-
+    this.loader.hideLoading()
     this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
   }
 

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { GroupService } from 'src/app/providers/group.service';
 import { NavController } from '@ionic/angular'
 import { NavigationExtras } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Observable } from 'rxjs'
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @Component({
   selector: 'app-form-group',
@@ -13,9 +14,11 @@ import { Observable } from 'rxjs'
 })
 export class FormGroupPage implements OnInit {
 
+  @ViewChild(LoaderComponent) loader: LoaderComponent
+
   constructor( private fb: FormBuilder, private groupService: GroupService, private navCtrl: NavController,
       private authService: AuthenticationService) { }
-     
+  
   form_validations: FormGroup
   codeList = []
   user: object
@@ -38,6 +41,7 @@ export class FormGroupPage implements OnInit {
     })
   }
   onSubmit( value ) {
+    this.loader.presentLoading()
     this.user = this.authService.userDetails()
     let code: any
     do{
@@ -52,8 +56,13 @@ export class FormGroupPage implements OnInit {
         }
       }
     this.groupService.createGroup( value, code, this.user['uid'] )
-    .then( res => this.navCtrl.navigateForward('/group-code', navigationExtras) )
-    .catch( err => console.log("err ", err )  )
+      .then( res => {
+        this.loader.hideLoading()
+        this.navCtrl.navigateForward('/group-code', navigationExtras) 
+      })
+      .catch( err => {
+        this.loader.hideLoading()
+      })
     }
   }
 }

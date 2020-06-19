@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { GroupService } from 'src/app/providers/group.service'
 import { NavController } from '@ionic/angular';
 import { NavigationExtras } from '@angular/router'
 import { UsersService } from 'src/app/providers/users.service';
 import * as firebase from 'firebase'
+import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @Component({
   selector: 'app-join-group',
@@ -17,6 +18,7 @@ export class JoinGroupPage implements OnInit {
   message: string = ''
   userObserver: any
   user: any
+  @ViewChild(LoaderComponent) loader: LoaderComponent
 
   constructor( private fb: FormBuilder, private groupService: GroupService,
     private navCtrl: NavController, private userService: UsersService ) {
@@ -36,6 +38,7 @@ export class JoinGroupPage implements OnInit {
     })
   }
   onSubmit( value ) {
+    this.loader.presentLoading()
     this.groupService.getAllCodes()
     .subscribe( codes =>{
       codes.forEach( line => {
@@ -50,9 +53,11 @@ export class JoinGroupPage implements OnInit {
         if ( this.listCodes.includes( code ) ){
          this.setUserField( this.user[0].uid, code )
         }else{
+          this.loader.hideLoading()
           this.message = `This ${code} does not exist`
         }
       } else{
+        this.loader.hideLoading()
         this.message = `You already have this ${code} in the group list`
       }
     }else {
@@ -65,6 +70,7 @@ export class JoinGroupPage implements OnInit {
     }
     this.userService.setUser( uid,fields )
     .then( res =>{
+      this.loader.hideLoading()
       let navigationExtras: NavigationExtras = {
         queryParams:{
           code
@@ -72,7 +78,8 @@ export class JoinGroupPage implements OnInit {
       }
       this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
     })
-    .catch( err => err )
+    .catch( err => {
+      this.loader.hideLoading()
+     })
   }
-
 }
