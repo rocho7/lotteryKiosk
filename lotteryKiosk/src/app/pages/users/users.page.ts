@@ -40,6 +40,9 @@ export class UsersPage implements OnInit {
 
       this.codeGroup = group.code || this.dataService.getData('codeGroup')
       if ( this.codeGroup ) {
+        
+        this.storage.set('lastGroupCodeSelected', this.codeGroup)
+        this.dataService.setData('codeGroup', this.codeGroup)
         this.getUsers()
       }else{
         let message = 'No players in user section. Please select a group'

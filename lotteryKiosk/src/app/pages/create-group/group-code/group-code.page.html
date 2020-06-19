@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>group-code</ion-title>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-back-button (click)="redirectTo()"></ion-back-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -32,6 +32,11 @@
         <ion-icon name="share-outline"></ion-icon>
         <ion-label>Share</ion-label>
       </ion-chip>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button expand="block" fill="outline" (click)="continue()">Continue</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

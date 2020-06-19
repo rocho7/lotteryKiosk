@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, NavigationExtras } from '@angular/router'
 import { SocialSharing } from '@ionic-native/social-sharing/ngx'
 import { ToastController, NavController } from '@ionic/angular';
 
@@ -47,8 +47,16 @@ export class GroupCodePage implements OnInit {
     });
     toast.present();
   }
-  redirectTo(){
-    this.navCtrl.navigateRoot('/menu/tabs/group-list')
+  // redirectTo(){
+  //   this.navCtrl.navigateRoot('/menu/tabs/group-list')
+  // }
+  continue(){
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        code: this.code
+      }
+    };
+    this.navCtrl.navigateRoot('menu/tabs/users', navigationExtras)
   }
   
 }

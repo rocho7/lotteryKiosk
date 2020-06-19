@@ -1,14 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupService } from 'src/app/providers/group.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { take } from 'rxjs/operators'
 import { UsersService } from 'src/app/providers/users.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationExtras } from '@angular/router'
 import { StorageService } from 'src/app/services/store/storage.service'
-import * as firebase from 'firebase'
 import { DataService } from 'src/app/providers/data-service.service';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { LoaderComponent } from 'src/app/components/loader/loader.component';
 @Component({
   selector: 'app-group-list',
@@ -24,7 +20,7 @@ export class GroupListPage implements OnInit {
   isGroupSelected: string
   
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
-    private authService: AuthenticationService, private navCtrl: NavController, private storage: StorageService,
+    private navCtrl: NavController, private storage: StorageService,
     private dataService: DataService, private toastCtrl: ToastController ) { 
     this.userObserver = this.userService.userWatcher$
   }
@@ -42,7 +38,7 @@ export class GroupListPage implements OnInit {
  
 
   getUserGroups(){
-    this.loader.presentLoading()
+    // this.loader.presentLoading()
     this.groupService.getAllGroups()
     .subscribe( groups => {
       this.groupList = []
@@ -101,8 +97,6 @@ export class GroupListPage implements OnInit {
         code: group.data.code
       }
     }
-    this.setGroupSelected( group.data.code )
-    this.loader.hideLoading()
     this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
   }
 
