@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { Lottery } from '../../classes/lottery'
 import { UserListClass, balanceClassModel } from '../../classes/userClassModel'
@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../services/authentication.service'
 import { DataService } from '../../providers/data-service.service'
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from 'src/app/services/store/storage.service';
+import { LoadingService } from 'src/app/services/loading.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -24,7 +25,8 @@ export class UsersPage implements OnInit {
 
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
-    private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService ) {
+    private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService,
+    private loader: LoadingService ) {
     (<any>window).lottery = this.lottery;
     console.log( this.authService.userDetails() )
       this.userObserver = this.userService.userWatcher$
@@ -53,6 +55,7 @@ export class UsersPage implements OnInit {
     })
   }
   getUsers() {
+    this.loader.presentLoading()
     this.userService.getUsers( this.codeGroup )
         .then( userList => {
           console.log("userList ", userList)
@@ -60,7 +63,9 @@ export class UsersPage implements OnInit {
           this.lottery.UsersList = userList
           this.setUsersList()
         })
-        .catch( err => console.log("error ", err))
+        .catch( err => {
+          this.loader.hideLoading()
+          })
   }
   setUsersList(){
     this.userService.getRoles().subscribe( data => {
@@ -80,6 +85,7 @@ export class UsersPage implements OnInit {
       this.lottery.BalanceList = []
       this.lottery.BalanceList = balance;
       this.dataService.setData('userList', this.lottery.UsersList)
+      this.loader.hideLoading()
     })
   }
 
@@ -99,6 +105,7 @@ export class UsersPage implements OnInit {
     return await modal.present();
   }
   setBalance( newBalance: UserListClass ){
+    this.loader.presentLoading()
     let newUser = Object.assign( new UserListClass(), newBalance )
     let balance = new balanceClassModel();
     balance.amount = newBalance.amount
@@ -118,6 +125,7 @@ export class UsersPage implements OnInit {
     this.userService.addBalance( data )
      .then( res => {
        if ( res.id ) {
+         this.loader.hideLoading()
          let message =`You add some money to ${newUser.name}'s balance`
          let color = 'success'
         this.showToast( message, color );
@@ -126,8 +134,7 @@ export class UsersPage implements OnInit {
   }
 
   async deleteUser( user: UserListClass ){
-    let userDeleted = this.lottery.UsersList.filter( userLine => userLine.uid === user.uid )
-      console.log("userDeleted ", userDeleted)
+    
     let isDeleted = null
     if ( this.currentUser['uid'] === user.uid ) {
           isDeleted = await this.deleteUserAndConfirm( user )
@@ -140,6 +147,7 @@ export class UsersPage implements OnInit {
     }else {
       if ( this.currentUser['idrole'] === 'ROLE_AD' ){
         isDeleted = await this.deleteUserAndConfirm( user)
+        if ( isDeleted ) this.getUsers()
       }
       let message = "You can not delete an user. You are not ADMIN"
       let color = 'warning'

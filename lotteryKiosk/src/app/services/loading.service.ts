@@ -1,20 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
-@Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss'],
+@Injectable({
+  providedIn: 'root'
 })
-export class LoaderComponent implements OnInit {
-  
+export class LoadingService {
   loader: any
-  constructor( private loadingCtrl: LoadingController) {}
-
-  ngOnInit() {
-
-  }
-
+  constructor( private loadingCtrl: LoadingController) { }
   async presentLoading(){
 
     this.loader = await this.loadingCtrl.create({

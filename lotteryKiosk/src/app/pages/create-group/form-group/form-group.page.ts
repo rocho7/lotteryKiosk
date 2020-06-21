@@ -4,8 +4,7 @@ import { GroupService } from 'src/app/providers/group.service';
 import { NavController } from '@ionic/angular'
 import { NavigationExtras } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { Observable } from 'rxjs'
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-form-group',
@@ -14,10 +13,9 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
 })
 export class FormGroupPage implements OnInit {
 
-  @ViewChild(LoaderComponent) loader: LoaderComponent
 
   constructor( private fb: FormBuilder, private groupService: GroupService, private navCtrl: NavController,
-      private authService: AuthenticationService) { }
+      private authService: AuthenticationService, private loader: LoadingService) { }
   
   form_validations: FormGroup
   codeList = []

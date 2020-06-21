@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { FormGroupPageRoutingModule } from './form-group-routing.module';
 
 import { FormGroupPage } from './form-group.page';
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -17,6 +16,6 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
     IonicModule,
     FormGroupPageRoutingModule
   ],
-  declarations: [FormGroupPage, LoaderComponent]
+  declarations: [FormGroupPage]
 })
 export class FormGroupPageModule {}

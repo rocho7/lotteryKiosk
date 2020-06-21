@@ -12,6 +12,8 @@ export class UsersService {
   amount: Observable<any[]>
   userWatcher = new BehaviorSubject<any>([])
   userWatcher$ = this.userWatcher.asObservable()
+  codeGroup  = new BehaviorSubject<string>('')
+  codeGroup$ = this.codeGroup.asObservable()
 
   constructor( private firestore: AngularFirestore ) {}
 
@@ -37,7 +39,7 @@ export class UsersService {
     })
   }
   getUsers( codeGroup ){
-    // return this.users = this.firestore.collection('users').snapshotChanges() 
+
     return new Promise<any>(( resolve, reject ) =>{
       
        firebase.firestore().collection('users').where("codes", "array-contains", codeGroup)
@@ -51,6 +53,8 @@ export class UsersService {
           })
         });
         console.log("this.users ", this.users)
+
+        this.codeGroup.next( codeGroup )    
         
         resolve( this.users )
       })

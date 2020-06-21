@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular'
 import { AuthenticationService } from '../../services/authentication.service'
 import { StorageService } from 'src/app/services/store/storage.service';
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +15,9 @@ export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
   userInfo: any
-  @ViewChild(LoaderComponent) loader: LoaderComponent
 
   constructor( private navCtrl: NavController, private authService: AuthenticationService, private formBuilder: FormBuilder,
-    private storage: StorageService) { }
+    private storage: StorageService, private loader: LoadingService) { }
   
   ngOnInit() {
 
@@ -52,11 +51,11 @@ export class LoginPage implements OnInit {
     this.loader.presentLoading()
     this.authService.loginUser( value )
     .then( res => {
-    this.loader.hideLoading()
+      this.loader.hideLoading()
       this.errorMessage = '';
       this.navCtrl.navigateRoot('/menu/tabs/group-list')
     }, err =>{
-    this.loader.hideLoading()
+      this.loader.hideLoading()
       this.errorMessage = err.message
     })
   }

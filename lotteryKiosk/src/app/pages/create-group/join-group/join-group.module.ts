@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { JoinGroupPageRoutingModule } from './join-group-routing.module';
 
 import { JoinGroupPage } from './join-group.page';
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -17,6 +16,6 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
     IonicModule,
     JoinGroupPageRoutingModule
   ],
-  declarations: [JoinGroupPage, LoaderComponent]
+  declarations: [JoinGroupPage]
 })
 export class JoinGroupPageModule {}

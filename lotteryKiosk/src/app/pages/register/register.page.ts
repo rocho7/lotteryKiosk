@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../services/authentication.service'
 import { NavController } from '@ionic/angular'
 import { UserListClass } from '../../classes/userClassModel'
 import { UsersService } from '../../providers/users.service'
-import { LoaderComponent } from 'src/app/components/loader/loader.component'
+import { LoadingService } from 'src/app/services/loading.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,7 +14,6 @@ export class RegisterPage implements OnInit {
   validations_form: FormGroup
   errorMessage = ''
   successMessage = ''
-  @ViewChild(LoaderComponent) loader: LoaderComponent;
 
   validation_messages = {
     'email': [
@@ -28,7 +27,7 @@ export class RegisterPage implements OnInit {
   };
 
   constructor( private authService: AuthenticationService, private fb: FormBuilder, private navCtrl: NavController,
-    private userService: UsersService) { }
+    private userService: UsersService, private loader: LoadingService) { }
 
   ngOnInit() {
 

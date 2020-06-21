@@ -5,7 +5,6 @@ import { NavController } from '@ionic/angular';
 import { NavigationExtras } from '@angular/router'
 import { UsersService } from 'src/app/providers/users.service';
 import * as firebase from 'firebase'
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
 
 @Component({
   selector: 'app-join-group',
@@ -18,7 +17,6 @@ export class JoinGroupPage implements OnInit {
   message: string = ''
   userObserver: any
   user: any
-  @ViewChild(LoaderComponent) loader: LoaderComponent
 
   constructor( private fb: FormBuilder, private groupService: GroupService,
     private navCtrl: NavController, private userService: UsersService ) {
@@ -38,7 +36,6 @@ export class JoinGroupPage implements OnInit {
     })
   }
   onSubmit( value ) {
-    this.loader.presentLoading()
     this.groupService.getAllCodes()
     .subscribe( codes =>{
       codes.forEach( line => {
@@ -53,24 +50,21 @@ export class JoinGroupPage implements OnInit {
         if ( this.listCodes.includes( code ) ){
          this.setUserField( this.user[0].uid, code )
         }else{
-          this.loader.hideLoading()
           this.message = `This ${code} does not exist`
         }
       } else{
-        this.loader.hideLoading()
         this.message = `You already have this ${code} in the group list`
       }
     }else {
       this.setUserField( this.user[0].uid, code )
     }
   }
-  setUserField( uid, code ){
+  setUserField( uid: string, code: string ){
     let fields = {
       codes: firebase.firestore.FieldValue.arrayUnion( code )
     }
     this.userService.setUser( uid,fields )
     .then( res =>{
-      this.loader.hideLoading()
       let navigationExtras: NavigationExtras = {
         queryParams:{
           code
@@ -78,8 +72,6 @@ export class JoinGroupPage implements OnInit {
       }
       this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
     })
-    .catch( err => {
-      this.loader.hideLoading()
-     })
+    .catch( err => err )
   }
 }

@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupService } from 'src/app/providers/group.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { UsersService } from 'src/app/providers/users.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationExtras } from '@angular/router'
 import { StorageService } from 'src/app/services/store/storage.service'
 import { DataService } from 'src/app/providers/data-service.service';
-import { LoaderComponent } from 'src/app/components/loader/loader.component';
+import { LoadingService } from 'src/app/services/loading.service';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.page.html',
@@ -13,32 +14,36 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
 })
 export class GroupListPage implements OnInit {
 
-  @ViewChild(LoaderComponent) loader: LoaderComponent
   groupList = []
   currentUser = []
   userObserver: any
+  codeGroupObserver: any
   isGroupSelected: string
   
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
     private navCtrl: NavController, private storage: StorageService,
-    private dataService: DataService, private toastCtrl: ToastController ) { 
+    private dataService: DataService, private toastCtrl: ToastController, private loader: LoadingService ) { 
     this.userObserver = this.userService.userWatcher$
+    this.codeGroupObserver = this.userService.codeGroup$
   }
 
 
   ngOnInit() {
-    this.userObserver.subscribe( res => {
-      console.log("observable ", res)
-      this.currentUser = []
-      this.currentUser = res
-      
-      this.getUserGroups()
+    this.userObserver.subscribe( user => {
+      if ( user[0] ) {
+        this.currentUser = []
+        this.currentUser = user
+        this.loader.presentLoading()      
+        this.getUserGroups()
+      }
+    })
+    this.codeGroupObserver.subscribe( code =>{
+      this.isGroupSelected = code
     })
   }
  
 
   getUserGroups(){
-    // this.loader.presentLoading()
     this.groupService.getAllGroups()
     .subscribe( groups => {
       this.groupList = []
@@ -61,13 +66,11 @@ export class GroupListPage implements OnInit {
         this.storage.get('lastGroupCodeSelected')
         .then( code => {
           console.log("code ", code)
-          
             this.isGroupSelected = code || this.groupList[0].data.code
-            console.log("this.grouplist ", this.groupList)
-            this.setGroupSelected( this.isGroupSelected )
-          
+            this.setGroupSelected( this.isGroupSelected )          
         })
       }
+      this.loader.hideLoading()
     })
   }
 
@@ -99,7 +102,6 @@ export class GroupListPage implements OnInit {
     }
     this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
   }
-
   async presentAlertConfirm() {
     const alert = await this.alertCtrl.create({
       header: 'Confirm',
@@ -123,8 +125,6 @@ export class GroupListPage implements OnInit {
     const result = await alert.onDidDismiss();  
     return result
   }
-
-  
   setGroupSelected( code ) {
     this.storage.set('lastGroupCodeSelected', code)
     this.dataService.setData('codeGroup', code)
