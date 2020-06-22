@@ -20,7 +20,7 @@ export class MenuPage implements OnInit {
   roleList = []
   balance = []
   currentPage: string
-
+  titleModule: string
   pages = [
     {
       name: 'Dashboard',
@@ -104,8 +104,4 @@ export class MenuPage implements OnInit {
       console.error(error)
     })
   }
-  goTo(){
-    this.navCtrl.navigateForward('/group')
-  }
-
 }

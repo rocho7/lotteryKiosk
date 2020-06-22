@@ -1,11 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>group-list</ion-title>
+    <!-- Side menu button -->
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="add-group" (click)="goTo()">
+        <ion-icon name="add-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<h3>group list</h3>
 <ion-list>
   <ion-item-sliding *ngFor="let group of groupList">
     <ion-item (click)="goToUserList( group )">

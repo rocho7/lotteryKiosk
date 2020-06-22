@@ -13,5 +13,10 @@
         "PASSWORD": "Contraseña",
         "CHOOSELANGUAGE": "Elige un lenguaje",
         "PRIVACYLOW": "Acepto las condiciones de uso y politica de privacidad"
+    },
+    "GROUP":{
+        "HEADER": "Confirmar",
+        "CANCELBUTTON": "Cancelar",
+        "ACCEPTBUTTON": "Acceptar"
     }
 }

@@ -13,5 +13,11 @@
         "PASSWORD": "Password",
         "CHOOSELANGUAGE": "Choose a language",
         "PRIVACYLOW": "I accept the terms of use and privacy policy."
+    },
+    "GROUP":{
+        "HEADER": "Confirm",
+        "MESSAGE": "Do you really want to delete this group?",
+        "CANCELBUTTON": "Cancel",
+        "ACCEPTBUTTON": "Accept"
     }
 }

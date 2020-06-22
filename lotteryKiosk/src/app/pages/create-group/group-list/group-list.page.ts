@@ -1,27 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupService } from 'src/app/providers/group.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { UsersService } from 'src/app/providers/users.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationExtras } from '@angular/router'
 import { StorageService } from 'src/app/services/store/storage.service'
 import { DataService } from 'src/app/providers/data-service.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.page.html',
   styleUrls: ['./group-list.page.scss'],
 })
-export class GroupListPage implements OnInit {
+export class GroupListPage implements OnInit, OnDestroy {
 
   groupList = []
   currentUser = []
   userObserver: any
   codeGroupObserver: any
   isGroupSelected: string
-  
+  subscription: Subscription
+
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
-    private navCtrl: NavController, private storage: StorageService,
+    private navCtrl: NavController, private storage: StorageService, private translate: TranslateService,
     private dataService: DataService, private toastCtrl: ToastController, private loader: LoadingService ) { 
     this.userObserver = this.userService.userWatcher$
     this.codeGroupObserver = this.userService.codeGroup$
@@ -104,16 +106,16 @@ export class GroupListPage implements OnInit {
   }
   async presentAlertConfirm() {
     const alert = await this.alertCtrl.create({
-      header: 'Confirm',
-      message: 'Do you really want to delete this group?',
+      header: this.translate.instant('GROUP.HEADER'),
+      message: this.translate.instant('GROUP.MESSAGE'),
       buttons:[
         {
-          text: 'Cancel',
+          text: this.translate.instant('GROUP.CANCELBUTTON'),
           role: 'cancel',
           handler: ()=>{}
         },
         {
-          text: 'Accept',
+          text: this.translate.instant('GROUP.ACCEPTBUTTON'),
           role: 'accept',
           handler: ()=> {
             return true
@@ -137,5 +139,10 @@ export class GroupListPage implements OnInit {
     })
     toast.present()
   }
-
+  goTo(){
+    this.navCtrl.navigateForward('/group')
+  }
+  ngOnDestroy(){
+    this.subscription.unsubscribe()
+  }
 }
