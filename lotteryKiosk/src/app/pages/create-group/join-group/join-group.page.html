@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>joinGroup</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -8,16 +7,17 @@
 </ion-header>
 
 <ion-content>
-  <h3>Enter your friend's lottery code</h3>
+  <h3>{{ 'JOINGROUP.TITLE' | translate }}</h3>
   <form class="form" [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
     <ion-item>
-      <ion-label position="floating">Access code</ion-label>
+      <ion-label position="floating">{{ 'JOINGROUP.ACCESS' | translate }}</ion-label>
       <ion-input type="text" formControlName="code"></ion-input>
     </ion-item>
-    <div *ngIf="message">
-      {{ message }}
-    </div>
-    <ion-button type="submit" fill="outline" expand="full" [disabled]="!validations_form.valid">Continue</ion-button>
+    
+    <ion-text *ngIf="messageCodeNoExist" [translate]="'JOINGROUP.CODENOEXIST'" [translateParams]="params"></ion-text>
+    <ion-text *ngIf="messageHaveCode" [translate]="'JOINGROUP.HAVECODE'" [translateParams]="params"></ion-text>
+    
+    <ion-button type="submit" fill="outline" expand="full" [disabled]="!validations_form.valid">{{ 'JOINGROUP.CONTINUE' | translate }}</ion-button>
   </form>
 
 </ion-content>

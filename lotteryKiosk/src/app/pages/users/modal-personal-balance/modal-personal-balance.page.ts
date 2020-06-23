@@ -46,7 +46,7 @@ export class ModalPersonalBalancePage implements OnInit {
         this.modalCtrl.dismiss( this.user ) 
       }
     }else{
-      this.message = "You cannot modify any field. You are not ADMIN."
+      this.message = "MODALUSER.CANNOTMODIFYFIELD"
     }
   }
   cancel(){

@@ -39,12 +39,12 @@ export class LoginPage implements OnInit {
   }
   validation_messages = {
     'email':[
-      {type: 'required', message: 'Email is required'},
-      {type: 'pattern', message: 'Please enter a valid email'}
+      {type: 'required', message: 'ERROR.MAILREQUIRED'},
+      {type: 'pattern', message: 'ERROR.MAILNOVALID'}
     ],
     'password': [
-      {type: 'required', message: 'Password is required'},
-      {type: 'minlength', message: 'Password must be at least 6 characters long.'}
+      {type: 'required', message: 'ERROR.PASSWORDREQUIRED'},
+      {type: 'minlength', message: 'ERROR.PASSWORDNOVALID'}
     ]
   }
   loginUser( value ) {

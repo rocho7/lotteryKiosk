@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { GroupLotteryPageRoutingModule } from './group-lottery-routing.module';
 
 import { GroupLotteryPage } from './group-lottery.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GroupLotteryPageRoutingModule
+    GroupLotteryPageRoutingModule,
+    TranslateModule
   ],
   declarations: [GroupLotteryPage]
 })

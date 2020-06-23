@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>bets</ion-title>
+    <ion-title>{{ 'BETS.TITLE' | translate }}</ion-title>
     <!-- Side menu button -->
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -11,7 +11,7 @@
 <ion-content>
 <form [formGroup]="form_validations" (ngSubmit)="Accept(form_validations.value)">
   <ion-item>
-    <ion-label>Lottery</ion-label>
+    <ion-label>{{ 'BETS.LOTTERY' | translate }}</ion-label>
     <ion-select [(ngModel)]="selectItem"  formControlName="select" 
     (ionChange)="createBet( selectItem )">
       <ion-select-option  *ngFor="let lot of lottery.kindOfBets" [value]="lot">

@@ -1,9 +1,10 @@
 {
     "LOGIN":{
         "TITLE": "Login",
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
         "NOACCOUNT": "No account yet?",
-        "CREATEACCOUNT": "Create an account.",
-        "PASSWORD": "Password"
+        "CREATEACCOUNT": "Create an account."
     },
     "REGISTER":{
         "TITLE": "Register",
@@ -12,12 +13,94 @@
         "EMAIL": "Email",
         "PASSWORD": "Password",
         "CHOOSELANGUAGE": "Choose a language",
-        "PRIVACYLOW": "I accept the terms of use and privacy policy."
+        "PRIVACYLOW": "I accept the terms of use and privacy policy.",
+        "REGISTERBUTTON": "Register",
+        "HAVEACCOUNT": "Already have an account?",
+        "TRYLOGIN": "Try to Log In."
     },
     "GROUP":{
+        "TITLE": "Groups",
+        "DELETE": "Delete group",
         "HEADER": "Confirm",
         "MESSAGE": "Do you really want to delete this group?",
         "CANCELBUTTON": "Cancel",
-        "ACCEPTBUTTON": "Accept"
+        "ACCEPTBUTTON": "Accept",
+        "CANNOTDELETE": "You can not delete a group. You are not ADMIN."
+    },
+    "TABS":{
+        "GROUPS": "Groups",
+        "USERS": "Users",
+        "BETS": "Bets",
+        "CALENDAR": "Calendar",
+        "NOPLAYERS": "No players in user section. Please select a group.",
+        "ADDMONEY": "You add some money to a user's balance"
+    },
+    "USERS":{
+        "TITLE": "Users",
+        "DELETE": "Delete user",
+        "CONFIRM": "Confirm",
+        "MESSAGE": "Do you really want to delete this user?",
+        "CANCEL": "Cancel",
+        "REMOVE": "Remove",
+        "CANNOTDELETEUSER": "You can not delete an user. You are not ADMIN."
+    },
+    "MODALUSER":{
+        "TITLE": "Personal balance",
+        "NAME": "Name",
+        "NICK": "Nick",
+        "TOTAL": "Total",
+        "AMOUNT": "Amount",
+        "DATE": "Date",
+        "ACCEPT": "Accept",
+        "CANCEL": "Cancel",
+        "CANNOTMODIFYFIELD": "You cannot modify any field. You are not ADMIN."
+    },
+    "BETS":{
+        "TITLE": "Bets",
+        "LOTTERY": "Lotteries",
+        "HEADER": "Confirm",
+        "MESSAGE": "Do you really want to delete this bet?",
+        "CANCELBUTTON": "Cancelar",
+        "ACCEPTBUTTON": "Acceptar"
+    },
+    "CALENDAR":{
+        "TITLE": "Calendar",
+        "TODAY": "Today",
+        "MONTH": "Month",
+        "WEEK": "Week",
+        "DAY": "Day",
+        "EVENTS": "Load events"
+    },
+    "GROUPLOTTERY":{
+        "TITLE": "Lottery group",
+        "CREATE": "Create a group with your friends",
+        "JOIN": "Join a friend's group"
+    },
+    "JOINGROUP":{
+        "TITLE": "Enter your friend's lottery code",
+        "ACCESS": "Access code",
+        "CODENOEXIST": "This {{code}} does not exist",
+        "HAVECODE": "You already have this {{code}} in the group list",
+        "CONTINUE": "Continue"
+    },
+    "GROUPCODE":{
+        "TITLE": "Invite yours friends",
+        "ACCESS": "Access code",
+        "COPY": "Copy",
+        "SHARE": "Share",
+        "CONTINUE": "Continue"
+    },
+    "FORMGROUP":{
+        "TITLE": "Choose a name for the group",
+        "NAME": "Name of the group",
+        "DESCRIPTION": "Group description",
+        "OPTIONAL": "The description is optional",
+        "CONTINUE": "Continue"
+    },
+    "ERROR":{
+        "MAILREQUIRED": "Email is required.",
+        "MAILNOVALID": "Please enter a valid email.",
+        "PASSWORDREQUIRED": "Password is required.",
+        "PASSWORDNOVALID": "Password must be at least 6 characters long."
     }
 }

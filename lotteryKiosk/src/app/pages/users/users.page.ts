@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { Lottery } from '../../classes/lottery'
 import { UserListClass, balanceClassModel } from '../../classes/userClassModel'
@@ -9,6 +9,7 @@ import { DataService } from '../../providers/data-service.service'
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from 'src/app/services/store/storage.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -26,7 +27,7 @@ export class UsersPage implements OnInit {
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
     private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService,
-    private loader: LoadingService ) {
+    private loader: LoadingService, private translate: TranslateService ) {
     (<any>window).lottery = this.lottery;
     console.log( this.authService.userDetails() )
       this.userObserver = this.userService.userWatcher$
@@ -47,7 +48,7 @@ export class UsersPage implements OnInit {
         this.dataService.setData('codeGroup', this.codeGroup)
         this.getUsers()
       }else{
-        let message = 'No players in user section. Please select a group'
+        let message = 'USERS.NOPLAYERS'
         let type = 'warning'
         this.showToast( message, type )
         this.navCtrl.navigateRoot('/menu/tabs/group-list')
@@ -126,7 +127,7 @@ export class UsersPage implements OnInit {
      .then( res => {
        if ( res.id ) {
          this.loader.hideLoading()
-         let message =`You add some money to ${newUser.name}'s balance`
+         let message ="USERS.ADDMONEY"
          let color = 'success'
         this.showToast( message, color );
        }
@@ -149,7 +150,7 @@ export class UsersPage implements OnInit {
         isDeleted = await this.deleteUserAndConfirm( user)
         if ( isDeleted ) this.getUsers()
       }
-      let message = "You can not delete an user. You are not ADMIN"
+      let message = "USERS.CANNOTDELETEUSER"
       let color = 'warning'
       this.showToast( message, color );
 
@@ -172,15 +173,15 @@ export class UsersPage implements OnInit {
 
   async presentAlertConfirm(){
     const alert = await this.alertCtrl.create({
-      header: 'Confirm',
-      message: 'Do you really want to delete this user?',
+      header: this.translate.instant('USERS.CONFIRM'),
+      message: this.translate.instant('USERS.MESSAGE'),
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant('USERS.CANCEL'),
           role: 'cancel'
         },
         {
-          text: 'Remove',
+          text: this.translate.instant('USERS.REMOVE'),
           role: 'remove'
         }
       ]
@@ -192,7 +193,7 @@ export class UsersPage implements OnInit {
 
   async showToast( message: string, color ){
     const toast = await this.toastCtrl.create({
-      message: message,
+      message: this.translate.instant( message ),
       color: color,
       duration: 2000
     });

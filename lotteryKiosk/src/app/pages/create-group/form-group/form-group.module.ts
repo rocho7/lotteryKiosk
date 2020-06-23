@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormGroupPageRoutingModule } from './form-group-routing.module';
 
 import { FormGroupPage } from './form-group.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { FormGroupPage } from './form-group.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    FormGroupPageRoutingModule
+    FormGroupPageRoutingModule,
+    TranslateModule
   ],
   declarations: [FormGroupPage]
 })

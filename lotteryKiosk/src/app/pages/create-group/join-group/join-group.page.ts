@@ -14,9 +14,13 @@ import * as firebase from 'firebase'
 export class JoinGroupPage implements OnInit {
   validations_form: FormGroup
   listCodes = []
-  message: string = ''
+  messageCodeNoExist: string = ''
+  messageHaveCode: string = ''
   userObserver: any
   user: any
+  params = {
+    code: ''
+  }
 
   constructor( private fb: FormBuilder, private groupService: GroupService,
     private navCtrl: NavController, private userService: UsersService ) {
@@ -45,15 +49,18 @@ export class JoinGroupPage implements OnInit {
     })
   }
   codeExist( code ){
+    this.params = {
+      code: code
+    }
     if ( this.user[0].hasOwnProperty('codes') ){
       if ( !this.user[0].codes.includes( code ) ) {
         if ( this.listCodes.includes( code ) ){
          this.setUserField( this.user[0].uid, code )
         }else{
-          this.message = `This ${code} does not exist`
+          this.messageCodeNoExist = "CODENOEXIST"
         }
       } else{
-        this.message = `You already have this ${code} in the group list`
+        this.messageHaveCode = "HAVECODE"
       }
     }else {
       this.setUserField( this.user[0].uid, code )

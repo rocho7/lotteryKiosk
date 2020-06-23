@@ -89,7 +89,7 @@ export class GroupListPage implements OnInit, OnDestroy {
           }
         }      
     }else{
-      let message = "You can not delete a group. You are not ADMIN"
+      let message = "GROUP.CANNOTDELETE"
       let type = 'warning'
       this.showToast( message, type )
     }
@@ -133,7 +133,7 @@ export class GroupListPage implements OnInit, OnDestroy {
   }
   async showToast( message, type ){
     let toast = await this.toastCtrl.create({
-      message: message,
+      message: this.translate.instant( message ),
       color: type,
       duration: 2000
     })

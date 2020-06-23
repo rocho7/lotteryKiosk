@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>users</ion-title>
+    <ion-title>{{ 'CALENDAR.TITLE' | translate }}</ion-title>
     <!-- Side menu button -->
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -11,19 +11,19 @@
 <ion-content>
   <ion-segment>
     <ion-segment-button value="today">
-      <ion-button [disabled]="isToday" (click)="today()">Today</ion-button>
+      <ion-button [disabled]="isToday" (click)="today()">{{ 'CALENDAR.TODAY' | translate }}</ion-button>
     </ion-segment-button>
     <ion-segment-button value="months">
-      <ion-button (click)="changeMode('month')">M</ion-button>
+      <ion-button (click)="changeMode('month')">{{ 'CALENDAR.MONTH' | translate }}</ion-button>
     </ion-segment-button>
     <ion-segment-button value="weeks">
-      <ion-button (click)="changeMode('week')">W</ion-button>
+      <ion-button (click)="changeMode('week')">{{ 'CALENDAR.WEEK' | translate }}</ion-button>
     </ion-segment-button>
     <ion-segment-button value="days">
-      <ion-button (click)="changeMode('day')">D</ion-button>
+      <ion-button (click)="changeMode('day')">{{ 'CALENDAR.DAY' | translate }}</ion-button>
     </ion-segment-button>
     <ion-segment-button value="events">
-      <ion-button (click)="loadEvents()">Load Events</ion-button>
+      <ion-button (click)="loadEvents()">{{ 'CALENDAR.EVENTS' | translate }}</ion-button>
     </ion-segment-button>
   </ion-segment>
     <calendar [eventSource]="eventSource"

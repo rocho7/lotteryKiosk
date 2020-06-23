@@ -9,7 +9,7 @@
   (ngSubmit)="loginUser(validations_form.value)">
 
     <ion-item>
-      <ion-label position="floating" color="primary">Email</ion-label>
+      <ion-label position="floating" color="primary">{{ 'LOGIN.EMAIL' | translate }}</ion-label>
       <ion-input class="form-control" type="email" 
       formControlName="email"></ion-input>
     </ion-item>
@@ -18,7 +18,7 @@
       <ng-container *ngFor="let validation of validation_messages.email">
         <div class="error-message"
               *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email')).touched">
-              {{ validation.message }}
+              {{ validation.message | translate }}
 
         </div>
       </ng-container>
@@ -26,7 +26,7 @@
     </div>
 
     <ion-item>
-      <ion-label position="floating" color="primary">Password</ion-label>
+      <ion-label position="floating" color="primary">{{ 'LOGIN.PASSWORD' | translate }}</ion-label>
       <ion-input class="form-control" type="password" 
       formControlName="password"></ion-input>
     </ion-item>
@@ -35,7 +35,7 @@
       <ng-container *ngFor="let validation of validation_messages.password">
         <div class="error-message"
               *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password')).touched">
-              {{ validation.message }}
+              {{ validation.message | translate }}
 
         </div>
       </ng-container>

@@ -8,13 +8,15 @@ import { GroupCodePageRoutingModule } from './group-code-routing.module';
 
 import { GroupCodePage } from './group-code.page';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GroupCodePageRoutingModule
+    GroupCodePageRoutingModule,
+    TranslateModule
   ],
   declarations: [GroupCodePage],
   providers: [SocialSharing]

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { JoinGroupPageRoutingModule } from './join-group-routing.module';
 
 import { JoinGroupPage } from './join-group.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { JoinGroupPage } from './join-group.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    JoinGroupPageRoutingModule
+    JoinGroupPageRoutingModule,
+    TranslateModule
   ],
   declarations: [JoinGroupPage]
 })

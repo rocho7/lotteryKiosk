@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore'
 import { Observable, BehaviorSubject } from 'rxjs'
 import * as firebase from 'firebase'
+import { LanguagesService } from '../services/languages.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class UsersService {
   codeGroup  = new BehaviorSubject<string>('')
   codeGroup$ = this.codeGroup.asObservable()
 
-  constructor( private firestore: AngularFirestore ) {}
+  constructor( private firestore: AngularFirestore, private languageService: LanguagesService ) {}
 
   registerAccountDB( user ){
     let data = {
@@ -55,7 +56,7 @@ export class UsersService {
         console.log("this.users ", this.users)
 
         this.codeGroup.next( codeGroup )    
-        
+
         resolve( this.users )
       })
       .catch( err => reject(err))
@@ -65,6 +66,8 @@ export class UsersService {
     firebase.firestore().collection('users').doc( uid ).onSnapshot(doc =>{
       this.user = []
       this.user.push( doc.data())
+      console.log("doc.data", doc.data())
+      this.languageService.setInitialAppLanguage( doc.data()['language'] )
       this.userWatcher.next( this.user )
     })    
   }

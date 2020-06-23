@@ -6,6 +6,7 @@ import { BetsService } from '../../providers/bets.service'
 import { ConfigLotteriesService } from '../../providers/config-lotteries.service'
 import { MessagesService } from '../../providers/messages.service'
 import { DataService } from 'src/app/providers/data-service.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-bets',
   templateUrl: './bets.page.html',
@@ -22,7 +23,8 @@ export class BetsPage implements OnInit {
   indexSelected: number = 0
 
   constructor( private fb: FormBuilder, private betService: BetsService, private lotteryService: ConfigLotteriesService,
-    private alertCtrl: AlertController, private messageService: MessagesService, private dataService: DataService) {
+    private alertCtrl: AlertController, private messageService: MessagesService, private dataService: DataService,
+    private translate: TranslateService) {
     (<any>window).lottery = this.lottery;
    }
 
@@ -146,16 +148,16 @@ export class BetsPage implements OnInit {
 
   async presentAlertConfirm() {
     const alert = await this.alertCtrl.create({
-      header: 'Confirm',
-      message: 'Do you really want to delete this bet?',
+      header: this.translate.instant( 'BETS.HEADER' ),
+      message: this.translate.instant( 'BETS.MESSAGE' ),
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translate.instant( 'BETS.CANCELBUTTON' ),
           role:'cancel',
           handler: ()=>{}
         },
         {
-          text: 'Accept',
+          text: this.translate.instant( 'BETS.ACCEPTBUTTON' ),
           role: 'accept',
           handler: ( )=> {            
             return true;

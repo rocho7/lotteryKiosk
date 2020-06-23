@@ -8,6 +8,7 @@ import { ModalPersonalBalancePageRoutingModule } from './modal-personal-balance-
 
 import { ModalPersonalBalancePage } from './modal-personal-balance.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     ModalPersonalBalancePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
   declarations: [ModalPersonalBalancePage]
 })

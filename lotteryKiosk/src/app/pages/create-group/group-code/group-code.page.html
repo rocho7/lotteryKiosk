@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>group-code</ion-title>
     <!-- <ion-buttons slot="start">
       <ion-back-button (click)="redirectTo()"></ion-back-button>
     </ion-buttons> -->
@@ -8,11 +7,11 @@
 </ion-header>
 
 <ion-content>
-<h3>Invite yours friends</h3> 
+<h3>{{ 'GROUPCODE.TITLE' | translate }}</h3> 
 <ion-grid>
   <ion-row>
     <ion-col>
-      Access code:
+      {{ 'GROUPCODE.ACCESS' | translate }}:
     </ion-col>
   </ion-row>
   <ion-row>
@@ -24,19 +23,19 @@
     <ion-col class="copy-col">
       <ion-chip fill="outline" color="primary" (click)="share('copy')">
         <ion-icon name="copy-outline"></ion-icon>
-        <ion-label>Copy</ion-label>
+        <ion-label>{{ 'GROUPCODE.COPY' | translate }}</ion-label>
       </ion-chip>
     </ion-col>
     <ion-col class="share-col">
       <ion-chip fill="outline" color="primary" (click)="share('media')">
         <ion-icon name="share-outline"></ion-icon>
-        <ion-label>Share</ion-label>
+        <ion-label>{{ 'GROUPCODE.SHARE' | translate }}</ion-label>
       </ion-chip>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-button expand="block" fill="outline" (click)="continue()">Continue</ion-button>
+      <ion-button expand="block" fill="outline" (click)="continue()">{{ 'GROUPCODE.CONTINUE' | translate }}</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

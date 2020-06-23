@@ -13,8 +13,8 @@ export class LanguagesService {
 
   constructor( private translate: TranslateService, private storage: StorageService) { }
 
-  setInitialAppLanguage(){
-    let language = this.translate.getBrowserLang();
+  setInitialAppLanguage( lang?: string ){
+    let language = lang || this.translate.getBrowserLang();
     this.translate.setDefaultLang( language );
 
     this.setLanguage( language )

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { BetsPageRoutingModule } from './bets-routing.module';
 
 import { BetsPage } from './bets.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { BetsPage } from './bets.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    BetsPageRoutingModule
+    BetsPageRoutingModule,
+    TranslateModule
   ],
   declarations: [BetsPage]
 })
