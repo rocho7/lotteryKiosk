@@ -8,6 +8,7 @@ import { BetsPageRoutingModule } from './bets-routing.module';
 
 import { BetsPage } from './bets.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { ExpandableComponent } from 'src/app/components/expandable/expandable.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
     BetsPageRoutingModule,
     TranslateModule
   ],
-  declarations: [BetsPage]
+  declarations: [BetsPage, ExpandableComponent]
 })
 export class BetsPageModule {}

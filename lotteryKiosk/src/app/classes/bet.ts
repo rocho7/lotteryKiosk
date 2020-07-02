@@ -1,6 +1,6 @@
 import { isArray } from 'util'
 
-export class Lottery {
+export class LotteryBet {
     kindOfBets = []
    messagesList: any = []
 
@@ -27,6 +27,7 @@ export class Lottery {
             let newLine = Object.assign( new Bet(), line )
             this.betLines.push( newLine )
          });
+         console.log("this._betLines ", this.betLines)
       }
 }
 export class Bet{
@@ -45,6 +46,9 @@ export class Bet{
    horse: number
    _type: string
    start: number
+   user: Array<Object>
+   descriptionBet: string
+   comments: string
 
    get type() {
       return this._type;

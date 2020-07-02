@@ -25,12 +25,7 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/create-group/group-index/group-index.module').then( m => m.GroupIndexPageModule)
-  },
-  // {
-  //   path: '',
-  //   loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
-  // }
-
+  }
 
 ];
 

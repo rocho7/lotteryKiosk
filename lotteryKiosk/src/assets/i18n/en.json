@@ -60,8 +60,14 @@
         "LOTTERY": "Lotteries",
         "HEADER": "Confirm",
         "MESSAGE": "Do you really want to delete this bet?",
-        "CANCELBUTTON": "Cancelar",
-        "ACCEPTBUTTON": "Acceptar"
+        "PARTICIPANTSBUTTON": "Participants",
+        "CANCELBUTTON": "Delete",
+        "ACCEPTBUTTON": "Accept"
+    },
+    "EXPANDABLE":{
+        "PARTICIPANTS": "Participants",
+        "CHECKALL": "Check all",
+        "PARTICIPANTSREQUIRED": "At least select one of them."
     },
     "CALENDAR":{
         "TITLE": "Calendar",

@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LanguagesService } from './services/languages.service';
 import { StorageService } from './services/store/storage.service';
-
+import { Observable, BehaviorSubject } from 'rxjs'
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -14,6 +14,8 @@ import { StorageService } from './services/store/storage.service';
 export class AppComponent {
 
   currentUser: any
+  currentGroupCode = new BehaviorSubject<string>('')
+  currentGroupCode$ = this.currentGroupCode.asObservable()
 
   constructor(
     private platform: Platform,
@@ -35,6 +37,8 @@ export class AppComponent {
   }
   async getUserInfoFromStorage(){
     this.currentUser = await this.storage.get('userInfo')
+    let codeGroup = await this.storage.get('lastGroupCodeSelected')
+    this.currentGroupCode.next( codeGroup )
     if ( this.currentUser ) {
       this.languagesService.setInitialAppLanguage( this.currentUser.userInfoDB[0].language );
     }else{

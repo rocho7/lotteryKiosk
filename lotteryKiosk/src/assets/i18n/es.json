@@ -59,9 +59,15 @@
         "TITLE": "Apuestas",
         "LOTTERY": "Loterías",
         "HEADER": "Confirmar",
+        "PARTICIPANTSBUTTON": "Participantes",
         "MESSAGE": "¿Realmente quieres eliminar esta apuesta?",
-        "CANCELBUTTON": "Cancelar",
+        "CANCELBUTTON": "Eliminar",
         "ACCEPTBUTTON": "Acceptar"
+    },
+    "EXPANDABLE":{
+        "PARTICIPANTS": "Participantes",
+        "CHECKALL": "Seleccionar todos",
+        "PARTICIPANTSREQUIRED": "Selecciona al menos un participante."
     },
     "CALENDAR":{
         "TITLE": "Calendario",

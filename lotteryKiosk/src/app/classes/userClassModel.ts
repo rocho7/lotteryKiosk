@@ -16,6 +16,7 @@ export class UserListClass {
     acceptedProtectionLaw: boolean = false
     language: string
     _avatar = {}
+    _participant: boolean = false
     
     get name(){
         return this._name
@@ -40,6 +41,13 @@ export class UserListClass {
     }
     set total ( value ) {
         this._total = value;
+    }
+    get participant(){
+        return this._participant
+    }
+    set participant ( value ) {
+        console.log("participant ", value)
+        this._participant = value;
     }
     get avatar(){
         return this._avatar

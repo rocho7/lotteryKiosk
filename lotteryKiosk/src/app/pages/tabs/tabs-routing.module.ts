@@ -17,7 +17,11 @@ const routes: Routes = [
         loadChildren: () => import('../users/users.module').then( m => m.UsersPageModule )
       },
       {
-        path: 'bets',
+        path: 'bets-list',
+        loadChildren: () => import ('../bets-list/bets-list.module').then( m => m.BetsListPageModule)
+      },
+      {
+        path:'bets',
         loadChildren: () => import ('../bets/bets.module').then( m => m.BetsPageModule)
       },
       {
