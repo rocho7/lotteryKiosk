@@ -32,8 +32,7 @@
         "USERS": "Users",
         "BETS": "Bets",
         "CALENDAR": "Calendar",
-        "NOPLAYERS": "No players in user section. Please select a group.",
-        "ADDMONEY": "You add some money to a user's balance"
+        "NOPLAYERS": "No players in user section. Please select a group."
     },
     "USERS":{
         "TITLE": "Users",
@@ -42,7 +41,8 @@
         "MESSAGE": "Do you really want to delete this user?",
         "CANCEL": "Cancel",
         "REMOVE": "Remove",
-        "CANNOTDELETEUSER": "You can not delete an user. You are not ADMIN."
+        "CANNOTDELETEUSER": "You can not delete an user. You are not ADMIN.",
+        "ADDMONEY": "You add some money to a user's balance"
     },
     "MODALUSER":{
         "TITLE": "Personal balance",

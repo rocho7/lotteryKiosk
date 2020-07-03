@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header #headerUser>
   <ion-toolbar>
     <ion-title>{{ 'USERS.TITLE' | translate }}</ion-title>
     <!-- Side menu button -->
@@ -8,13 +8,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-<ion-list-header lines="inset">
+<ion-content class="content">
+<!-- <ion-list-header lines="inset">
   <ion-button>{{ 'USERS.SEEALL' | translate }}</ion-button>
-</ion-list-header>
-<ion-list *ngIf="lottery.UsersList.length > 0">
-  <ion-item-sliding *ngFor="let user of lottery.UsersList">
-    <ion-item>
+</ion-list-header> -->
+<ion-list *ngIf="lottery.UsersList.length > 0" class="ion-list">
+  <ion-item-sliding *ngFor="let user of lottery.UsersList; index as i" class="item-user{{i}}">
+    <ion-item (click)="openPersonalBalanceModel( user, i )">
       <ion-avatar slot="start" [ngStyle]="{'background-color': user.avatar.background, 'color': user.avatar.color}">
         {{ user.avatar.letter }}
       </ion-avatar>
@@ -24,7 +24,7 @@
         <h4>{{ user.role }}</h4>
       </ion-label>
       <ion-note color="primary" slot="end">{{ user.total }}</ion-note>
-      <ion-checkbox slot="end" (click)="openPersonalBalanceModel( user )"></ion-checkbox>
+      <ion-checkbox slot="end"></ion-checkbox>
     </ion-item>
     <ion-item-options side="end">
       <ion-item-option (click)="deleteUser(user)">{{ 'USERS.DELETE' | translate }}</ion-item-option>

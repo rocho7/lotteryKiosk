@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { UsersService } from '../../providers/users.service'
 import { Lottery } from '../../classes/lottery'
 import { UserListClass, balanceClassModel } from '../../classes/userClassModel'
@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StorageService } from 'src/app/services/store/storage.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { TranslateService } from '@ngx-translate/core';
+import anime from 'animejs/lib/anime.es';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -23,11 +24,12 @@ export class UsersPage implements OnInit {
   codeGroup:string = ''
   userObserver: any
   currentUser = []
+  @ViewChild('headerUser', { read: ElementRef }) header: ElementRef
 
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
     private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService,
-    private loader: LoadingService, private translate: TranslateService ) {
+    private loader: LoadingService, private translate: TranslateService, private elRef: ElementRef, private renderer: Renderer2 ) {
     (<any>window).lottery = this.lottery;
     console.log( this.authService.userDetails() )
       this.userObserver = this.userService.userWatcher$
@@ -35,7 +37,7 @@ export class UsersPage implements OnInit {
         this.currentUser = user[0]
       })
    }
-
+  
   ngOnInit() {
     
     this.activatedRoute.queryParams.subscribe( group =>{
@@ -90,10 +92,32 @@ export class UsersPage implements OnInit {
     })
   }
 
-  async openPersonalBalanceModel( user: UserListClass ) {
+  async openPersonalBalanceModel( user: UserListClass, index: number ) {
+    const headerHeight = this.header.nativeElement.offsetHeight
+    const userItemY = document.querySelector(`.item-user${index}`).getBoundingClientRect().y
+    
+    const itemUser = anime.timeline({
+      targets: `.content .item-user${index}`,
+      duration: 400,
+      easing: 'easeOutExpo',
+      zIndex: [{value: 2, duration: 500, round: true}]
+    });
+    itemUser.add({
+      translateY: - userItemY - (- headerHeight),
+      position: 'absolute',
+      easing: 'spring',
+    })
+    itemUser.add({
+      border: '3px solid yellow',
+      easing: 'easeInOutQuad'
+    }, '-=200');
+    
     user._amount = 0
     const modal = await this.modalCtrl.create({
       component: ModalPersonalBalancePage,
+      cssClass:'positionUserModal',
+      showBackdrop: false,
+      backdropDismiss: false,
       componentProps: {
         user: user
       }
@@ -102,6 +126,15 @@ export class UsersPage implements OnInit {
       if (newBalance.data !== null) {
         this.setBalance( newBalance.data )
       }
+      const itemUserOff = anime.timeline({
+      targets: `.content .item-user${index}`,
+        translateY: 0,
+        easing: 'easeOutExpo'
+      });
+      itemUserOff.add({
+        border: 0,
+        easing: 'easeInOutQuad'
+      }, '-=200');
     });
     return await modal.present();
   }

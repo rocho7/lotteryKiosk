@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UsersService } from 'src/app/providers/users.service';
-
+import anime from 'animejs/lib/anime.es';
 
 @Component({
   selector: 'app-modal-personal-balance',
