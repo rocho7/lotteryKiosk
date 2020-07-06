@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LotteryBet, Bet } from '../../classes/bet'
 import { UserListClass } from '../../classes/userClassModel'
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators} from '@angular/forms'
-import { AlertController } from '@ionic/angular'
+import { AlertController, ToastController, NavController } from '@ionic/angular'
 import { BetsService } from '../../providers/bets.service'
 import { ConfigLotteriesService } from '../../providers/config-lotteries.service'
 import { MessagesService } from '../../providers/messages.service'
@@ -32,7 +32,7 @@ export class BetsPage implements OnInit {
   constructor( private fb: FormBuilder, private betService: BetsService, private lotteryService: ConfigLotteriesService,
     private alertCtrl: AlertController, private messageService: MessagesService, private dataService: DataService,
     private translate: TranslateService, private store: StorageService, private userService: UsersService,
-    private router: ActivatedRoute) {
+    private router: ActivatedRoute, private toastCtrl: ToastController, private navCtrl: NavController) {
     (<any>window).lotteryBet = this.lotteryBet;
    }
 
@@ -41,11 +41,12 @@ export class BetsPage implements OnInit {
       this.idBets = params.betsList
       this.getConfigLotteries()
     })
+
     this.form_validations = this.fb.group({
       select: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      descriptionBet: new FormControl(this.idBets['data'].description || '', Validators.compose([
+      nameBet: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9 ]+$')
       ])),
@@ -78,11 +79,16 @@ async getBets() {
     let storeBets = []
     let carga = []
     let controls = <FormArray> this.form_validations.controls.eachLottery;
-    console.log("controls ", < FormArray > this.form_validations.controls.eachLottery)
 
-    if (this.idBets && this.idBets['data']['idBets'].length > 0) {
-      for (var i = 0; i < this.idBets['data']['idBets'].length; i++) {
-        storeBets.push(await this.betService.getBetsFromBetsList(this.idBets['data']['idBets'][i]))
+    if (this.idBets && this.idBets['idBets'].length > 0) {
+    
+      this.form_validations.controls.nameBet.setValue(this.idBets['name'])
+      for (var i = 0; i < this.idBets['idBets'].length; i++) {
+        let eachBet = await this.betService.getBetsFromBetsList(this.idBets['idBets'][i])
+        storeBets.push({
+          ...eachBet,
+          id: this.idBets['idBets'][i]
+        })
     }
     console.log("store ", storeBets)
         for (let i = 0; i < storeBets.length; i++) {
@@ -181,14 +187,20 @@ async getBets() {
     let newBet: Bet
     if ( controls.status === "VALID" ){
       newBet = Object.assign( new Bet(), controls.value ) 
-      newBet.descriptionBet = this.form_validations.controls.descriptionBet.value     
+      newBet.nameBet = this.form_validations.controls.nameBet.value     
     }    
     this.betService.setBetToDB( newBet )
     .then( res => {
-      newBet.referenciaDB = res.newBet
+      newBet.referenciaDB = res.res.id
       controls.get('referenciaDB').setValue(newBet.referenciaDB)
+      
       let id: string = this.idBets ? this.idBets['id'] : this.idBetList
-      this.betService.setBetList( id, res.res.id ).then( res => this.idBetList = res.id )
+      this.betService.setBetList( id, res.res.id, newBet.nameBet )
+      .then( res => {
+        this.idBetList = res.id 
+        let message = "BETS.MESSAGEBETCREATEDSUCCESSFULLY"
+        this.presentToast( message )
+      })
     })
   }
   deleteBet( id ) {
@@ -203,9 +215,20 @@ async getBets() {
         .then( res => {
           (<FormArray>this.form_validations.get('eachLottery')).removeAt( id )
           console.log(res)
+          let message = "BETS.MESSAGEBETDELETEDSUCCESSFULLY"
+          this.presentToast( message )
+          let controls = <FormArray> this.form_validations.controls.eachLottery;
+          if ( controls.length === 0 ){
+            this.deleteBetsList()
+          }
         })
       }      
     })    
+  }
+
+  deleteBetsList(){
+    this.betService.removeBetsList( this.idBets["id"] )
+    .then( res => this.navCtrl.navigateForward('/menu/tabs/bets-list'))
   }
 
   handleTypeOfBetInTemplate( idType ) {
@@ -260,6 +283,15 @@ async getBets() {
   expandItem( id ): void{
     let controls = (<FormArray>this.form_validations.get('eachLottery')).at( id )
     controls.value.expanded = !controls.value.expanded
+  }
+
+  async presentToast( message ) {
+    const toast = await this.toastCtrl.create({
+      message: this.translate.instant( message ),
+      duration: 2000,
+      color: 'success'
+    })
+    toast.present()
   }
 
 }

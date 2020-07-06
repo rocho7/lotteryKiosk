@@ -47,7 +47,7 @@ export class Bet{
    _type: string
    start: number
    user: Array<Object>
-   descriptionBet: string
+   nameBet: string
    comments: string
 
    get type() {

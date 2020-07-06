@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>bets-list</ion-title>
+    <ion-title>{{ 'BETSLIST.TITLE' | translate }}</ion-title>
     <!-- Side menu button -->
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
@@ -11,17 +11,19 @@
   </ion-toolbar>
 </ion-header>
 
+<app-filtro #searchBar (dataFiltered)="searchBetsList( $event )"></app-filtro>
+
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let group of betsList; index as i">
+    <ion-item-sliding *ngFor="let bet of betsList | filtro:betFiltered; index as i">
       <ion-item (click)="checkBets( i )">
         <ion-thumbnail slot="start">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
         </ion-thumbnail>
         <ion-label>
-          <h2>{{group.data.code}}</h2>
-          <h3>{{group.data.dateCreation.seconds * 1000 | date: 'd MMMM, y' }}</h3>
-          <h4>{{ group.data.comments }}</h4>
+          <h2>{{bet.name}}</h2>
+          <h3>{{bet.dateCreation.seconds * 1000 | date: 'd MMMM, y' }}</h3>
+          <h4>{{ bet.code }}</h4>
         </ion-label>
       </ion-item>
       <ion-item-options side="end">

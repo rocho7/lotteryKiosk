@@ -21,6 +21,7 @@ export class GroupListPage implements OnInit, OnDestroy {
   codeGroupObserver: any
   isGroupSelected: string
   subscription: Subscription
+  groupFiltered: string
 
   constructor( private groupService: GroupService, private alertCtrl: AlertController, private userService: UsersService, 
     private navCtrl: NavController, private storage: StorageService, private translate: TranslateService,
@@ -55,7 +56,7 @@ export class GroupListPage implements OnInit, OnDestroy {
             lineUser.codes.forEach( ( codeUser , index ) => {
               if ( codeUser === group.payload.doc.data()['code'] ){
                 this.groupList.push( {
-                  data: group.payload.doc.data(),
+                  ...group.payload.doc.data() as {},
                   id: group.payload.doc.id
                  })
               }
@@ -67,8 +68,7 @@ export class GroupListPage implements OnInit, OnDestroy {
         
         this.storage.get('lastGroupCodeSelected')
         .then( code => {
-          console.log("code ", code)
-            this.isGroupSelected = code || this.groupList[0].data.code
+            this.isGroupSelected = code || this.groupList[0].code
             this.setGroupSelected( this.isGroupSelected )          
         })
       }
@@ -99,7 +99,7 @@ export class GroupListPage implements OnInit, OnDestroy {
   goToUserList( group ) {
     let navigationExtras: NavigationExtras = {
       queryParams:{
-        code: group.data.code
+        code: group.code
       }
     }
     this.navCtrl.navigateForward('/menu/tabs/users', navigationExtras)
@@ -141,6 +141,9 @@ export class GroupListPage implements OnInit, OnDestroy {
   }
   goTo(){
     this.navCtrl.navigateForward('/group')
+  }
+  searchGroup( group ){
+    this.groupFiltered = group
   }
   ngOnDestroy(){
     this.subscription.unsubscribe()

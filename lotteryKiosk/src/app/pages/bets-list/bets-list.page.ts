@@ -17,6 +17,7 @@ export class BetsListPage implements OnInit {
   groupCode: any 
   codeGroupObserver: any
   betsList: Array<object> = []
+  betFiltered: string
 
   constructor( private navCtrl: NavController, private betService: BetsService, private storage: StorageService, 
     private userService: UsersService, private dataService: DataService) {
@@ -41,7 +42,7 @@ export class BetsListPage implements OnInit {
           if ( betsListLine.payload.doc.data()['code'] === this.groupCode ){
             this.betsList.push({
               id: betsListLine.payload.doc.id,
-              data: betsListLine.payload.doc.data()
+              ...betsListLine.payload.doc.data() as {}
             })
           }
         });
@@ -60,6 +61,10 @@ export class BetsListPage implements OnInit {
       }
     }
     this.navCtrl.navigateForward('/menu/tabs/bets', navigationExtras)
+  }
+
+  searchBetsList( bet: string ){
+    this.betFiltered = bet
   }
 
 }

@@ -12,8 +12,10 @@
 <!-- <ion-list-header lines="inset">
   <ion-button>{{ 'USERS.SEEALL' | translate }}</ion-button>
 </ion-list-header> -->
+<app-filtro #searchBar (dataFiltered)="searchUser( $event )"></app-filtro>
+
 <ion-list *ngIf="lottery.UsersList.length > 0" class="ion-list">
-  <ion-item-sliding *ngFor="let user of lottery.UsersList; index as i" class="item-user{{i}}">
+  <ion-item-sliding *ngFor="let user of lottery.UsersList | filtro:userFiltered; index as i" class="item-user{{i}}">
     <ion-item (click)="openPersonalBalanceModel( user, i )">
       <ion-avatar slot="start" [ngStyle]="{'background-color': user.avatar.background, 'color': user.avatar.color}">
         {{ user.avatar.letter }}

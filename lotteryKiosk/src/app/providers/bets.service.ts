@@ -66,12 +66,12 @@ export class BetsService {
 
     })
   }
-  setBetList( idBetsList: string, idBets: string ){
+  setBetList( idBetsList: string, idBets: string, name: string ){
     let dataToSend = {
       code: this.dataService.getData('codeGroup'),
       dateCreation: new Date(),
       comments: '',
-      description: '',
+      name: name,
       idBets: null
      }
      let arrayBets = []
@@ -83,7 +83,6 @@ export class BetsService {
       .catch( err => err )
     }else{
       dataToSend['idBets'] = firebase.firestore.FieldValue.arrayUnion( idBets ) 
-     console.log(   )
       return this.fb.collection( this.betListCollection ).doc(  idBetsList  )
       .update( dataToSend )
       .then( res => {
@@ -96,6 +95,11 @@ export class BetsService {
   }
   getBetsList(){
     return this.fb.collection( this.betListCollection ).snapshotChanges()
+  }
+  removeBetsList( id ) {
+    return this.fb.collection( this.betListCollection ).doc( id ).delete()
+    .then( res => res )
+    .catch( err => err )
   }
   async getBetsFromBetsList( idDocument ){
     return await firebase.firestore().collection('bets').doc( idDocument ).get()

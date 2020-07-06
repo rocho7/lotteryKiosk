@@ -8,15 +8,18 @@ import { UsersPageRoutingModule } from './users-routing.module';
 
 import { UsersPage } from './users.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+import { FiltroComponent } from 'src/app/pipes/filtro/filtro.component';
 
 @NgModule({
   imports: [
+    PipesModule,
     CommonModule,
     FormsModule,
     IonicModule,
     UsersPageRoutingModule,
     TranslateModule
   ],
-  declarations: [UsersPage]
+  declarations: [UsersPage, FiltroComponent]
 })
 export class UsersPageModule {}

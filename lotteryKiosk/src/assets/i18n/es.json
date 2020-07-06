@@ -42,7 +42,8 @@
         "CANCEL": "Cancelar",
         "REMOVE": "Eliminar",
         "CANNOTDELETEUSER": "No puedes eliminar usuarios. No eres ADMINISTRADOR.",
-        "ADDMONEY": "Has añadido dinero al balance de un usuario"
+        "ADDMONEY": "Has añadido dinero al balance de un usuario",
+        "SEARCH": "Buscar..."
     },
     "MODALUSER":{
         "TITLE": "Balance personal",
@@ -62,7 +63,12 @@
         "PARTICIPANTSBUTTON": "Participantes",
         "MESSAGE": "¿Realmente quieres eliminar esta apuesta?",
         "CANCELBUTTON": "Eliminar",
-        "ACCEPTBUTTON": "Acceptar"
+        "ACCEPTBUTTON": "Acceptar",
+        "MESSAGEBETCREATEDSUCCESSFULLY": "Bet has been created successfully",
+        "MESSAGEBETDELETEDSUCCESSFULLY": "Bet has been deleted successfully"
+    },
+    "BETSLIST":{
+        "TITLE": "Lista de apuestas"
     },
     "EXPANDABLE":{
         "PARTICIPANTS": "Participantes",

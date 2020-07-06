@@ -25,13 +25,14 @@ export class UsersPage implements OnInit {
   userObserver: any
   currentUser = []
   @ViewChild('headerUser', { read: ElementRef }) header: ElementRef
+  @ViewChild('searchBar', { read: ElementRef }) searchBar : ElementRef
+  userFiltered: string
 
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
     private alertCtrl: AlertController, private navCtrl: NavController, private storage: StorageService,
     private loader: LoadingService, private translate: TranslateService, private elRef: ElementRef, private renderer: Renderer2 ) {
     (<any>window).lottery = this.lottery;
-    console.log( this.authService.userDetails() )
       this.userObserver = this.userService.userWatcher$
       this.userObserver.subscribe( user => {
         this.currentUser = user[0]
@@ -41,7 +42,6 @@ export class UsersPage implements OnInit {
   ngOnInit() {
     
     this.activatedRoute.queryParams.subscribe( group =>{
-      console.log(group)
 
       this.codeGroup = group.code || this.dataService.getData('codeGroup')
       if ( this.codeGroup ) {
@@ -61,7 +61,6 @@ export class UsersPage implements OnInit {
     this.loader.presentLoading()
     this.userService.getUsers( this.codeGroup )
         .then( userList => {
-          console.log("userList ", userList)
           this.lottery.UsersList = [];
           this.lottery.UsersList = userList
           this.setUsersList()
@@ -93,6 +92,7 @@ export class UsersPage implements OnInit {
   }
 
   async openPersonalBalanceModel( user: UserListClass, index: number ) {
+    this.renderer.setStyle(this.searchBar.nativeElement, 'display', 'none') 
     const headerHeight = this.header.nativeElement.offsetHeight
     const userItemY = document.querySelector(`.item-user${index}`).getBoundingClientRect().y
     
@@ -135,6 +135,8 @@ export class UsersPage implements OnInit {
         border: 0,
         easing: 'easeInOutQuad'
       }, '-=200');
+    this.renderer.setStyle(this.searchBar.nativeElement, 'display', 'block') 
+
     });
     return await modal.present();
   }
@@ -231,6 +233,12 @@ export class UsersPage implements OnInit {
       duration: 2000
     });
     toast.present()
+  }
+
+  searchUser( user: string ) {
+    this.userFiltered = user
+
+    console.log("ev ", user)
   }
 
 }
