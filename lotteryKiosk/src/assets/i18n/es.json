@@ -43,7 +43,8 @@
         "REMOVE": "Eliminar",
         "CANNOTDELETEUSER": "No puedes eliminar usuarios. No eres ADMINISTRADOR.",
         "ADDMONEY": "Has añadido dinero al balance de un usuario",
-        "SEARCH": "Buscar..."
+        "SEARCH": "Buscar...",
+        "TOTALBALANCE": "Balance total"
     },
     "MODALUSER":{
         "TITLE": "Balance personal",

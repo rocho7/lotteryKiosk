@@ -8,13 +8,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="content">
+<ion-content class="content" #content 
+              [scrollEvents]="true"
+              (ionScroll)="logScrolling($event)">
 <!-- <ion-list-header lines="inset">
   <ion-button>{{ 'USERS.SEEALL' | translate }}</ion-button>
 </ion-list-header> -->
 <app-filtro #searchBar (dataFiltered)="searchUser( $event )"></app-filtro>
 
-<ion-list *ngIf="lottery.UsersList.length > 0" class="ion-list">
+<ion-list *ngIf="lottery.UsersList.length > 0" id="ionList">
   <ion-item-sliding *ngFor="let user of lottery.UsersList | filtro:userFiltered; index as i" class="item-user{{i}}">
     <ion-item (click)="openPersonalBalanceModel( user, i )">
       <ion-avatar slot="start" [ngStyle]="{'background-color': user.avatar.background, 'color': user.avatar.color}">
@@ -34,11 +36,17 @@
   </ion-item-sliding>
 </ion-list>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button>
     {{ lottery.totalBalance }}<ion-icon name="cash-outline"></ion-icon>
   </ion-fab-button>
-</ion-fab>
+</ion-fab> -->
+<div class="sticky-footer" #stickyFooter >
+  <div class="total-box" #totalBox>
+    <span class="text-balance" #textBalance [innerHTML]="'USERS.TOTALBALANCE' | translate"></span>&nbsp;<span>{{ lottery.totalBalance }}<ion-icon name="cash-outline"></ion-icon></span>
+  </div>
+</div>
+<br><br><br><br><br><br>
 
 <!-- Skeleton screen -->
 <div *ngIf="!lottery.UsersList">

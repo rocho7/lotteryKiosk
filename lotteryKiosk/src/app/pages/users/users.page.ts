@@ -11,6 +11,7 @@ import { StorageService } from 'src/app/services/store/storage.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { TranslateService } from '@ngx-translate/core';
 import anime from 'animejs/lib/anime.es';
+import { read } from 'fs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -26,7 +27,12 @@ export class UsersPage implements OnInit {
   currentUser = []
   @ViewChild('headerUser', { read: ElementRef }) header: ElementRef
   @ViewChild('searchBar', { read: ElementRef }) searchBar : ElementRef
+  @ViewChild('stickyFooter', { read: ElementRef }) stickyFooter: ElementRef
+  @ViewChild('totalBox', { read: ElementRef }) totalBox: ElementRef
+  @ViewChild('textBalance', { read: ElementRef }) textBalance: ElementRef
+
   userFiltered: string
+  scrollLastY: number = 0
 
   constructor( private userService: UsersService, public modalCtrl: ModalController, private toastCtrl: ToastController,
     private authService: AuthenticationService, private dataService: DataService, private activatedRoute: ActivatedRoute,
@@ -38,9 +44,8 @@ export class UsersPage implements OnInit {
         this.currentUser = user[0]
       })
    }
-  
+
   ngOnInit() {
-    
     this.activatedRoute.queryParams.subscribe( group =>{
 
       this.codeGroup = group.code || this.dataService.getData('codeGroup')
@@ -90,12 +95,18 @@ export class UsersPage implements OnInit {
       this.loader.hideLoading()
     })
   }
-
-  async openPersonalBalanceModel( user: UserListClass, index: number ) {
+  animeOnUserSelected( index: number, userListClassArray: Array<string> ){
     this.renderer.setStyle(this.searchBar.nativeElement, 'display', 'none') 
     const headerHeight = this.header.nativeElement.offsetHeight
     const userItemY = document.querySelector(`.item-user${index}`).getBoundingClientRect().y
-    
+
+    anime({
+      targets: userListClassArray,
+      duration: 300,
+      opacity: 0,
+      easing: 'linear'
+    })
+   
     const itemUser = anime.timeline({
       targets: `.content .item-user${index}`,
       duration: 400,
@@ -112,6 +123,35 @@ export class UsersPage implements OnInit {
       easing: 'easeInOutQuad'
     }, '-=200');
     
+  }
+  animeOffUserSelected( index: number, userListClassArray: Array<string> ){
+    anime({
+      targets: userListClassArray,
+      duration: 300,
+      opacity: 1,
+      easing: 'linear'
+    })
+    const itemUserOff = anime.timeline({
+    targets: `.content .item-user${index}`,
+      translateY: 0,
+      easing: 'easeOutExpo'
+    });
+    itemUserOff.add({
+      border: 0,
+      easing: 'easeInOutQuad'
+    }, '-=200');
+  this.renderer.setStyle(this.searchBar.nativeElement, 'display', 'block') 
+  }
+
+  async openPersonalBalanceModel( user: UserListClass, index: number ) {
+    const userListClassArray = this.lottery.UsersList.map( ( userLine, userIndex ) => {
+      if( userIndex !== index ){
+        return `.content .item-user${userIndex}`
+      }else{
+        return 'ghost-element'
+      }
+    })
+    this.animeOnUserSelected( index, userListClassArray )
     user._amount = 0
     const modal = await this.modalCtrl.create({
       component: ModalPersonalBalancePage,
@@ -126,16 +166,7 @@ export class UsersPage implements OnInit {
       if (newBalance.data !== null) {
         this.setBalance( newBalance.data )
       }
-      const itemUserOff = anime.timeline({
-      targets: `.content .item-user${index}`,
-        translateY: 0,
-        easing: 'easeOutExpo'
-      });
-      itemUserOff.add({
-        border: 0,
-        easing: 'easeInOutQuad'
-      }, '-=200');
-    this.renderer.setStyle(this.searchBar.nativeElement, 'display', 'block') 
+      this.animeOffUserSelected( index, userListClassArray )
 
     });
     return await modal.present();
@@ -237,8 +268,24 @@ export class UsersPage implements OnInit {
 
   searchUser( user: string ) {
     this.userFiltered = user
-
-    console.log("ev ", user)
   }
+  
+   logScrolling( ev ){    
+    if ( ev.detail.scrollTop > this.scrollLastY ){
+      this.renderer.removeClass(this.stickyFooter.nativeElement, 'sticky-footer')
+      this.renderer.setStyle(this.totalBox.nativeElement, 'width', '100%')
 
+      this.renderer.addClass(this.stickyFooter.nativeElement, 'positionated-footer-scroll')        
+      this.renderer.addClass(this.totalBox.nativeElement, 'positionated-total-box')
+      this.renderer.setStyle(this.textBalance.nativeElement, 'display', 'inline')
+     }else{
+      this.renderer.removeClass(this.stickyFooter.nativeElement, 'positionated-footer-scroll')
+      this.renderer.removeClass(this.totalBox.nativeElement, 'positionated-total-box')        
+
+      this.renderer.addClass(this.stickyFooter.nativeElement, 'sticky-footer')
+      this.renderer.setStyle(this.totalBox.nativeElement, 'width', '18%')
+      this.renderer.setStyle(this.textBalance.nativeElement, 'display', 'none')
+    }
+    this.scrollLastY = ev.detail.scrollTop
+  }
 }

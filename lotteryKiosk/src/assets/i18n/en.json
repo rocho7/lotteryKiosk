@@ -43,7 +43,8 @@
         "REMOVE": "Remove",
         "CANNOTDELETEUSER": "You can not delete an user. You are not ADMIN.",
         "ADDMONEY": "You add some money to a user's balance",
-        "SEARCHUSER": "Search..."
+        "SEARCHUSER": "Search...",
+        "TOTALBALANCE": "Total balance"
     },
     "MODALUSER":{
         "TITLE": "Personal balance",

@@ -3,3 +3,29 @@ ion-avatar{
     line-height: 9vh;
     text-transform: uppercase
 }
+.sticky-footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 14vh;
+    text-align: center;
+}
+.total-box{
+    background-color: fade-in($color: #000fff, $amount: 1);
+    float: right;
+    width: 18%;
+}
+.text-balance{
+    display: none;
+}
+.positionated-footer-scroll{
+    position: initial;
+    width: 100%;
+    line-height: 14vh;
+    text-align: center;
+}
+.positionated-total-box{
+    background-color: fade-in($color: #000fff, $amount: 1);
+    float: right;
+    width: 100%;
+}
