@@ -5,27 +5,18 @@
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
+    <ion-buttons slot="end" class="buttons-calendar">
+      <div>
+        <ion-icon name="calendar-outline" (click)="today()"></ion-icon>
+      </div>
+      <div>
+        <ion-icon name="ellipsis-vertical-outline" (click)="openPopover( $event )"></ion-icon>
+      </div>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-segment>
-    <ion-segment-button value="today">
-      <ion-button [disabled]="isToday" (click)="today()">{{ 'CALENDAR.TODAY' | translate }}</ion-button>
-    </ion-segment-button>
-    <ion-segment-button value="months">
-      <ion-button (click)="changeMode('month')">{{ 'CALENDAR.MONTH' | translate }}</ion-button>
-    </ion-segment-button>
-    <ion-segment-button value="weeks">
-      <ion-button (click)="changeMode('week')">{{ 'CALENDAR.WEEK' | translate }}</ion-button>
-    </ion-segment-button>
-    <ion-segment-button value="days">
-      <ion-button (click)="changeMode('day')">{{ 'CALENDAR.DAY' | translate }}</ion-button>
-    </ion-segment-button>
-    <ion-segment-button value="events">
-      <ion-button (click)="loadEvents()">{{ 'CALENDAR.EVENTS' | translate }}</ion-button>
-    </ion-segment-button>
-  </ion-segment>
     <calendar [eventSource]="eventSource"
               [calendarMode]="calendar.mode"
               [locale]="calendar.locale"

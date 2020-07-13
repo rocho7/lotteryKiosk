@@ -119,7 +119,7 @@ export class UsersPage implements OnInit {
       easing: 'spring',
     })
     itemUser.add({
-      border: '3px solid yellow',
+      border: '3px solid rgb(255,240,103)',
       easing: 'easeInOutQuad'
     }, '-=200');
     

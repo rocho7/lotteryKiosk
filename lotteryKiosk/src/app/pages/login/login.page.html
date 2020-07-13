@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="content-auth">
   <form class="form" [formGroup]="validations_form" 
   (ngSubmit)="loginUser(validations_form.value)">
 
@@ -43,14 +43,12 @@
     </div>
     <ion-button class="submit-btn" type="submit"
     [disabled]="!validations_form.valid"
-    color="primary" expand="full" fill="outline">Login</ion-button>
-  </form>
-   <label class="error-message">{{errorMessage}}</label>
+    color="primary" expand="block" fill="solid">Login</ion-button>
+    <label class="error-message">{{errorMessage}}</label>
 
-   <p class="go-to-register">
-    {{ 'LOGIN.NOACCOUNT' | translate }} <a (click)="goToRegisterPage()">{{ 'LOGIN.CREATEACCOUNT' | translate }}</a>
-  </p>
-  <!-- LOADING MODULE -->
-  <app-loader></app-loader>
-  <!-- END LOADING MODULE -->
+    <p class="go-to-register">
+      {{ 'LOGIN.NOACCOUNT' | translate }} <a (click)="goToRegisterPage()" color="tertiary">{{ 'LOGIN.CREATEACCOUNT' | translate }}</a>
+    </p>
+  </form>
+   
 </ion-content>

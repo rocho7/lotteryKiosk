@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular'
+import { NavController, PopoverController } from '@ionic/angular'
 
 import { DataService } from '../../providers/data-service.service'
+import { KindOfCalendarComponent } from './kind-of-calendar/kind-of-calendar.component';
+import { type } from 'os';
 
 @Component({
   selector: 'app-calendar',
@@ -47,10 +49,11 @@ export class CalendarPage implements OnInit {
       }
   };
  
-  constructor(private navController:NavController, private dataService: DataService) {
+  constructor(private navController:NavController, private dataService: DataService, private popoverCtrl: PopoverController ) {
     
   }
   ngOnInit() {
+      this.dataService.setData('viewCalendar', this.calendar.mode)
     console.log("user ", this.dataService.getData('userList'))
     
     if ( this.dataService.getData('userList') ){
@@ -137,4 +140,24 @@ export class CalendarPage implements OnInit {
       current.setHours(0, 0, 0);
       return date < current;
   };
+
+  async openPopover( ev: any ){
+    const popover = await this.popoverCtrl.create({
+        component: KindOfCalendarComponent,
+        event: ev,
+        translucent: true,
+        backdropDismiss: false
+    })
+
+    popover.onDidDismiss().then( typeEvent =>{
+        if ( typeEvent ) {
+            if( typeEvent.data.type !== 'events' ){
+                this.changeMode( typeEvent.data.type )
+            }else{
+                this.loadEvents()
+            }
+        }
+    })
+    return await popover.present()
+  }
 }

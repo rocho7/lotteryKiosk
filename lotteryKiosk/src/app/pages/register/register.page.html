@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="content-auth">
 
   <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
     <ion-item>
@@ -48,15 +48,15 @@
       <ion-checkbox formControlName="acceptedProtectionLaw"></ion-checkbox>
     </ion-item>
 
-    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid"
-    expand="full" fill="outline">{{ "REGISTER.REGISTERBUTTON" | translate }}</ion-button>
+    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid" color="primary"
+    expand="block" fill="solid">{{ "REGISTER.REGISTERBUTTON" | translate }}</ion-button>
 
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
     <div *ngIf="successMessage">
       <ion-spinner name="lines"></ion-spinner>
     </div>
+    <p class="go-to-login">{{ "REGISTER.HAVEACCOUNT" | translate }} <a (click)="goLoginPage()" color="tertiary">{{ "REGISTER.TRYLOGIN" | translate }}</a></p>
   </form>
-  <p class="go-to-login">{{ "REGISTER.HAVEACCOUNT" | translate }} <a (click)="goLoginPage()">{{ "REGISTER.TRYLOGIN" | translate }}</a></p>
 
 </ion-content>

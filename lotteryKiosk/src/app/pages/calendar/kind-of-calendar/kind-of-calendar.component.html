@@ -1,0 +1,6 @@
+<ion-list *ngFor="let event of events">
+  <ion-item button (click)="select( event )">
+    {{ event.translated | translate }}
+    <ion-icon slot="end" name="checkmark" *ngIf="event.type === eventSelected"></ion-icon>
+  </ion-item>
+</ion-list>

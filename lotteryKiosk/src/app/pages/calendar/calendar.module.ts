@@ -9,6 +9,7 @@ import { CalendarPageRoutingModule } from './calendar-routing.module';
 import { CalendarPage } from './calendar.page';
 import { NgCalendarModule } from 'ionic2-calendar'
 import { TranslateModule } from '@ngx-translate/core';
+import { KindOfCalendarComponent } from './kind-of-calendar/kind-of-calendar.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { TranslateModule } from '@ngx-translate/core';
     NgCalendarModule,
     TranslateModule
   ],
-  declarations: [CalendarPage]
+  declarations: [CalendarPage, KindOfCalendarComponent]
 })
 export class CalendarPageModule {}

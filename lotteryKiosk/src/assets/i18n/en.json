@@ -60,8 +60,10 @@
     "BETS":{
         "TITLE": "Bets",
         "LOTTERY": "Lotteries",
+        "NAME": "Bet name",
         "HEADER": "Confirm",
         "MESSAGE": "Do you really want to delete this bet?",
+        "drawingDate": "Drawing date",
         "PARTICIPANTSBUTTON": "Participants",
         "CANCELBUTTON": "Delete",
         "ACCEPTBUTTON": "Accept",

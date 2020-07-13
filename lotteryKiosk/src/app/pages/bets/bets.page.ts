@@ -66,6 +66,7 @@ export class BetsPage implements OnInit {
   getConfigLotteries(){
     this.lotteryService.getConfigLottery()
     .subscribe( res => {
+      this.lotteryBet.kindOfBets = []
       res.forEach(element => {
         if ( element.payload.doc.exists ) {
           this.lotteryBet.kindOfBets.push( element.payload.doc.data() )
@@ -109,6 +110,7 @@ async getBets() {
                     expanded: false,
                     user: this.setUserEachBet(this.usersList, carga[i]),
                     atLeastOneUserParticipant: new FormControl(false, Validators.requiredTrue),
+                    drawingDate: new FormControl(carga[i].drawingDate, Validators.required)
                 }))
             }
             console.log("controls ", controls)
@@ -175,9 +177,11 @@ async getBets() {
       referenciaDB: '',
       expanded: false,
       user: this.setUserEachBet( this.usersList ),
-      atLeastOneUserParticipant: new FormControl(false, Validators.requiredTrue)
+      atLeastOneUserParticipant: new FormControl(false, Validators.requiredTrue),
+      drawingDate: new FormControl(null, Validators.required)
       })
-    )    
+    )
+    console.log("controls ", controls)    
   }
   Accept( data ) {
     let controls = (<FormArray>this.form_validations.get('eachLottery')).at( this.indexSelected )
@@ -204,26 +208,32 @@ async getBets() {
     })
   }
   deleteBet( id ) {
-    this.presentAlertConfirm()
-    .then( isBetDeleted => {
-      if ( isBetDeleted.role === 'accept' ){
-        let controls = (<FormArray>this.form_validations.get('eachLottery')).at( id )
-        let newBet: Bet
-        newBet = Object.assign( new Bet(), controls.value )      
-        
-        this.betService.removeBet( newBet )
-        .then( res => {
-          (<FormArray>this.form_validations.get('eachLottery')).removeAt( id )
-          console.log(res)
-          let message = "BETS.MESSAGEBETDELETEDSUCCESSFULLY"
-          this.presentToast( message )
-          let controls = <FormArray> this.form_validations.controls.eachLottery;
-          if ( controls.length === 0 ){
-            this.deleteBetsList()
-          }
-        })
-      }      
-    })    
+    let controls = <FormArray> this.form_validations.controls.eachLottery;
+console.log("controls ", controls)
+    if( controls.controls[id].status === "INVALID" ){
+      (<FormArray>this.form_validations.get('eachLottery')).removeAt( id )
+    }else{
+      this.presentAlertConfirm()
+      .then( isBetDeleted => {
+        if ( isBetDeleted.role === 'accept' ){
+          let controls = (<FormArray>this.form_validations.get('eachLottery')).at( id )
+          let newBet: Bet
+          newBet = Object.assign( new Bet(), controls.value )      
+          
+          this.betService.removeBet( newBet )
+          .then( res => {
+            (<FormArray>this.form_validations.get('eachLottery')).removeAt( id )
+            console.log(res)
+            let message = "BETS.MESSAGEBETDELETEDSUCCESSFULLY"
+            this.presentToast( message )
+            let controls = <FormArray> this.form_validations.controls.eachLottery;
+            if ( controls.length === 0 ){
+              this.deleteBetsList()
+            }
+          })
+        }      
+      })
+    }    
   }
 
   deleteBetsList(){

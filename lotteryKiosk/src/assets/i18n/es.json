@@ -60,9 +60,11 @@
     "BETS":{
         "TITLE": "Apuestas",
         "LOTTERY": "Loterías",
+        "NAME": "Nombre de la apuesta",
         "HEADER": "Confirmar",
         "PARTICIPANTSBUTTON": "Participantes",
         "MESSAGE": "¿Realmente quieres eliminar esta apuesta?",
+        "drawingDate": "Fecha sorteo",
         "CANCELBUTTON": "Eliminar",
         "ACCEPTBUTTON": "Acceptar",
         "MESSAGEBETCREATEDSUCCESSFULLY": "Bet has been created successfully",
@@ -109,6 +111,12 @@
         "DESCRIPTION": "Descripción del grupo",
         "OPTIONAL": "La descripción es opcional",
         "CONTINUE": "Continuar"
+    },
+    "KINDOFCALENDAR":{
+        "DAY": "Día",
+        "WEEK": "Semana",
+        "MONTH":"Mes",
+        "EVENTS":"Cargar eventos"
     },
     "ERROR":{
         "MAILREQUIRED": "Email es obligatorio.",

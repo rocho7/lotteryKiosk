@@ -11,7 +11,7 @@ ion-avatar{
     text-align: center;
 }
 .total-box{
-    background-color: fade-in($color: #000fff, $amount: 1);
+    background: linear-gradient(to bottom, rgba(255,240,103,1) 0%, rgba(255,240,103,1) 9%, rgba(255,240,103,1) 24%, rgba(255,240,103,1) 40%, rgba(255,191,54,1) 100%);
     float: right;
     width: 18%;
 }
@@ -25,7 +25,7 @@ ion-avatar{
     text-align: center;
 }
 .positionated-total-box{
-    background-color: fade-in($color: #000fff, $amount: 1);
+    background: linear-gradient(to bottom, rgba(255,240,103,1) 0%, rgba(255,240,103,1) 9%, rgba(255,240,103,1) 24%, rgba(255,240,103,1) 40%, rgba(255,191,54,1) 100%);
     float: right;
     width: 100%;
 }
