@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'BETS.TITLE' | translate }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<form [formGroup]="form_validations" (ngSubmit)="Accept(form_validations.value)">
+  <div class="item-sticky">
+    <ion-item>
+      <ion-label>{{ 'BETS.LOTTERY' | translate }}</ion-label>
+      <ion-select [(ngModel)]="selectItem"  formControlName="select" 
+      (ionChange)="createBet( selectItem )">
+        <ion-select-option  *ngFor="let lot of lotteryBet.kindOfBets" [value]="lot">
+          {{ lot.type | uppercase }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">{{ 'BETS.NAME' | translate }}</ion-label>
+      <ion-input formControlName="nameBet"></ion-input>
+    </ion-item>
+  </div>
+  
+  <div formArrayName="eachLottery">
+    <ion-grid *ngFor="let cell of form_validations.get('eachLottery').controls;  index as i">
+      <div [formGroupName]="i" *ngIf="cell.value.idType || cell.value.idType === 0">
+        <ion-row>
+          <ion-label position="floating" class="label-combination-extranumber">{{ handleTypeOfBetInTemplate( cell.value.idType )[0].type }}</ion-label>
+        </ion-row>
+        <ion-row class="row-combination-extranumber">
+          <ion-col *ngFor="let combi of cell.get('combination1').controls; index as h">
+            <ion-item formArrayName="combination1">
+              <ion-input type="number" [formControlName]="h" class="input-combination-extranumber"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-label position="floating" class="label-combination-extranumber">{{ handleTypeOfBetInTemplate( cell.value.idType )[0].description1 }}</ion-label>
+        </ion-row>
+        <ion-row class="row-combination-extranumber">
+          <ion-col *ngFor="let extra of cell.get('extranumber').controls; index as g">
+            <ion-item formArrayName="extranumber">
+              <ion-input type="number" [formControlName]="g" class="input-combination-extranumber"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-label position="floating" class="label-combination-extranumber">{{ handleTypeOfBetInTemplate( cell.value.idType )[0].drawingDate | translate }}</ion-label>
+        </ion-row>
+        <ion-row class="row-combination-extranumber">
+          <ion-col>
+            <ion-item>
+              <ion-datetime displayFormat="D MMM YYYY H:mm" [formControl]="cell.controls.drawingDate" class="input-combination-extranumber"></ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row> 
+          <ion-col>
+            <ion-button expand="block" fill="outline" (click)="expandItem( i )">{{ 'BETS.PARTICIPANTSBUTTON' | translate }}</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button type="submit" expand="block" fill="outline"
+            (click)="indexSelected=i" [disabled]="cell.invalid || form_validations.get('nameBet').invalid">
+            {{ 'BETS.ACCEPTBUTTON' | translate }}
+          </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="danger" expand="block" fill="outline" (click)="deleteBet( i )">{{ 'BETS.CANCELBUTTON' | translate }}</ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <app-expandable [expanded]="cell.value.expanded" [user]="cell">
+            <!-- {{ user.name }} -->
+          </app-expandable>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </div>
+  
+</form>
+<ion-grid *ngIf="form_validations.get('eachLottery').length === 0 && lotteryBet.messagesList.length > 0">
+  <ion-row>
+    <ion-col>
+      <h2>{{ displayMessageInTemplate( 'nobets' )[0].nobets }}</h2>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

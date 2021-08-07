@@ -1,0 +1,12 @@
+.expand-wrapper {
+    transition: max-height 0.4s ease-in-out;
+    overflow: auto;
+    height: auto;
+    width: 100%;
+    max-height: 168px;
+  }
+  
+  .collapsed {
+    max-height: 0 !important;
+  }
+ 

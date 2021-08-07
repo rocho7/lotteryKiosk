@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'CALENDAR.TITLE' | translate }}</ion-title>
+    <!-- Side menu button -->
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="buttons-calendar">
+      <div>
+        <ion-icon name="calendar-outline" (click)="today()"></ion-icon>
+      </div>
+      <div>
+        <ion-icon name="ellipsis-vertical-outline" (click)="openPopover( $event )"></ion-icon>
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="calendar.mode"
+              [locale]="calendar.locale"
+              [dateFormatted]="calendar.dateFormatted"
+              [currentDate]="calendar.currentDate"
+              (onCurrentDateChanged)="onCurrentDateChanged($event)"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              (onTimeSelected)="onTimeSelected($event)"
+              step="30">
+    </calendar>
+</ion-content>

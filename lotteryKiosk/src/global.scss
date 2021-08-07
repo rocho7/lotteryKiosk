@@ -24,3 +24,44 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.positionUserModal .modal-wrapper{
+    margin-top: 282px;
+    border: 3px solid rgb(255,240,103);
+}
+ion-toolbar{
+    --background: rgb(255,240,103);
+}
+ion-content .content-auth{
+    --background: rgb(255,240,103);
+    --background: filter-gradient(#fff067, #918e79, horizontal);
+    --background: linear-gradient(to bottom, rgba(255,240,103,1) 0%, rgba(255,240,103,1) 9%, rgba(255,240,103,1) 24%, rgba(255,240,103,1) 40%, rgba(255,191,54,1) 100%);
+    ion-item{
+      --background: rgb(255,240,103);
+    }
+    .sc-ion-input-ios-h{
+        --color: #999999
+      }
+      .native-input.sc-ion-input-md{
+        color: #999999
+      }    
+}
+ion-content form ion-item {
+    --padding-start: 0px;
+}
+ion-content form {
+    padding: 0 16px 0 16px;
+}
+a[color=tertiary]{
+    color: #5260ff
+}
+.alert-wrapper.sc-ion-alert-ios, .alert-wrapper.sc-ion-alert-md{
+    --background: rgb(255,240,103);
+    --background: filter-gradient(#fff067, #918e79, horizontal);
+    --background: linear-gradient(to bottom, rgba(255,240,103,1) 0%, rgba(255,240,103,1) 9%, rgba(255,240,103,1) 24%, rgba(255,240,103,1) 40%, rgba(255,191,54,1) 100%);
+    
+  }
+ 
+  ion-tab-bar{
+    --background: linear-gradient(to top, rgba(255,240,103,1) 0%, rgba(255,240,103,1) 9%, rgba(255,240,103,1) 24%, rgba(255,240,103,1) 40%, rgba(255,191,54,1) 100%);
+  }
