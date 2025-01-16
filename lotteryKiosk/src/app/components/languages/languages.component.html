@@ -1,9 +1,0 @@
-<ion-item [formGroup]="validations_form">
-  <ion-label color="primary">{{ "REGISTER.CHOOSELANGUAGE" | translate }}</ion-label>
-  <ion-select  formControlName="selectLanguage" 
-  (ionChange)="select(validations_form.get('selectLanguage').value)">
-    <ion-select-option  *ngFor="let lng of languages" [value]="lng">
-      {{ lng.text }}
-    </ion-select-option>
-  </ion-select>
-</ion-item>
