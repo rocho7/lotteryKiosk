@@ -1,0 +1,8 @@
+{
+  "name": "lotteryKiosk",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}
